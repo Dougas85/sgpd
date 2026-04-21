@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Análise SGPD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-light: #eff6ff;
+        --bg: #f1f5f9;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --danger: #dc2626;
+        --danger-bg: #fef2f2;
+        --danger-border: #fecaca;
+        --warning: #b45309;
+        --warning-bg: #fffbeb;
+        --warning-border: #fde68a;
+        --success: #059669;
+        --success-bg: #ecfdf5;
+        --success-border: #a7f3d0;
+        --radius: 12px;
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      /* ── TOPBAR ── */
+      .topbar {
+        background: var(--primary);
+        padding: 0 28px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .topbar-icon {
+        width: 28px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+      .topbar-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        letter-spacing: -0.1px;
+      }
+      .topbar-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .topbar-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.6);
+        font-weight: 400;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        text-align: center;
+        padding: 48px 20px 36px;
+      }
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--primary-light);
+        color: var(--primary);
+        font-size: 11.5px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 99px;
+        border: 1px solid #bfdbfe;
+        margin-bottom: 16px;
+        letter-spacing: 0.2px;
+      }
+      .hero h1 {
+        font-size: 30px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.8px;
+        line-height: 1.2;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 14px;
+        color: var(--muted);
+        max-width: 420px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      /* ── LAYOUT ── */
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+      }
+
+      /* ── CARDS ── */
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+      .card-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        margin-bottom: 14px;
+      }
+
+      /* ── FORM ── */
+      textarea {
+        width: 100%;
+        min-height: 130px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border);
+        padding: 12px 14px;
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 12.5px;
+        color: var(--text);
+        background: #f8fafc;
+        resize: vertical;
+        outline: none;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s;
+        line-height: 1.5;
+      }
+      textarea:focus {
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+      textarea::placeholder {
+        color: #94a3b8;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .btn-primary {
+        flex: 1;
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        background: var(--primary);
+        color: white;
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          transform 0.1s,
+          box-shadow 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3);
+      }
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+      }
+      .btn-primary:active {
+        transform: scale(0.99);
+      }
+      .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      .btn-secondary {
+        padding: 12px 18px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border);
+        background: white;
+        color: var(--muted);
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          color 0.15s,
+          background 0.15s;
+      }
+      .btn-secondary:hover {
+        border-color: #cbd5e1;
+        color: var(--text);
+        background: #f8fafc;
+      }
+
+      .spinner {
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.65s linear infinite;
+        display: none;
+        flex-shrink: 0;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ── ERRO BANNER ── */
+      .erro-banner {
+        background: var(--danger-bg);
+        border: 1px solid var(--danger-border);
+        border-radius: var(--radius);
+        padding: 14px 18px;
+        color: var(--danger);
+        font-size: 13.5px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* ── DASHBOARD ── */
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .stat-card {
+        background: var(--card);
+        padding: 20px;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sm);
+        text-align: center;
+      }
+      .stat-label {
+        font-size: 11.5px;
+        color: var(--muted);
+        font-weight: 500;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+      }
+      .stat-value {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1;
+        letter-spacing: -2px;
+      }
+      .stat-card.danger .stat-value {
+        color: var(--danger);
+      }
+      .stat-card.success .stat-value {
+        color: var(--success);
+      }
+
+      /* ── DIVIDER ── */
+      .section-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .section-divider h3 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+      }
+      .section-divider .divider-line {
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .badge-count {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: var(--danger-bg);
+        color: var(--danger);
+        border: 1px solid var(--danger-border);
+        white-space: nowrap;
+      }
+
+      /* ── SUCCESS ── */
+      .success-box {
+        background: var(--success-bg);
+        border: 1px solid var(--success-border);
+        border-radius: var(--radius);
+        padding: 36px 24px;
+        text-align: center;
+        color: var(--success);
+      }
+      .success-box .icon {
+        font-size: 32px;
+        display: block;
+        margin-bottom: 12px;
+      }
+      .success-box p {
+        font-weight: 700;
+        font-size: 16px;
+      }
+      .success-box span {
+        font-size: 13px;
+        opacity: 0.75;
+        margin-top: 6px;
+        display: block;
+      }
+
+      /* ── ALERTAS ── */
+      .alerta {
+        background: var(--card);
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--danger);
+        margin-bottom: 12px;
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+        transition:
+          box-shadow 0.15s,
+          transform 0.15s;
+      }
+      .alerta:hover {
+        box-shadow: var(--shadow);
+        transform: translateY(-1px);
+      }
+      .alerta.medio {
+        border-left-color: #f59e0b;
+      }
+
+      .alerta-header {
+        padding: 14px 18px 12px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .alerta-nome {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.2px;
+      }
+      .alerta-mat {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .alerta-info {
+        text-align: right;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+        line-height: 1.8;
+        flex-shrink: 0;
+      }
+      .alerta-info strong {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .alerta-body {
+        padding: 0 18px 16px;
+      }
+
+      .registros-box {
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 12px 14px;
+        margin-bottom: 12px;
+      }
+      .registros-box-title {
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .registro-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 12.5px;
+      }
+      .registro-row:last-of-type {
+        border-bottom: none;
+      }
+      .registro-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary);
+        flex-shrink: 0;
+      }
+      .registro-tempos {
+        flex: 1;
+        font-family: "Consolas", monospace;
+        color: var(--text);
+      }
+      .registro-dur {
+        font-family: "Consolas", monospace;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 12px;
+      }
+      .registros-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--border);
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tag {
+        font-size: 11.5px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        letter-spacing: 0.1px;
+      }
+      .tag.critico {
+        background: var(--danger-bg);
+        color: var(--danger);
+        border-color: var(--danger-border);
+      }
+      .tag.medio {
+        background: var(--warning-bg);
+        color: var(--warning);
+        border-color: var(--warning-border);
+      }
+      .tag.leve {
+        background: var(--primary-light);
+        color: var(--primary);
+        border-color: #bfdbfe;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+        padding-top: 36px;
+        line-height: 1.8;
+      }
+      footer a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 580px) {
+        .topbar-divider,
+        .topbar-sub {
+          display: none;
+        }
+        .hero h1 {
+          font-size: 24px;
+        }
+        .dashboard {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 8px;
+        }
+        .stat-value {
+          font-size: 26px;
+          letter-spacing: -1px;
+        }
+        .alerta-header {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .alerta-info {
+          text-align: left;
+        }
+        .form-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="topbar">
+      <div class="topbar-icon">📋</div>
+      <span class="topbar-title">SGPD Análise</span>
+      <div class="topbar-divider"></div>
+      <span class="topbar-sub">Análise de jornada e tempo externo</span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-badge">&#x1F4CA; Ferramenta de Análise</div>
+      <h1>Análise de Distribuição</h1>
+      <p>
+        Cole o HTML exportado do SGPD para identificar automaticamente
+        inconsistências de jornada.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-label">Dados de entrada</div>
+        <form method="POST" id="form-principal">
+          <textarea
+            name="dados"
+            id="campo-dados"
+            placeholder="Cole aqui o HTML completo do SGPD..."
+          ></textarea>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btn-analisar">
+              <div class="spinner" id="spinner"></div>
+              <span id="btn-texto">Analisar dados</span>
+            </button>
+            <button type="button" class="btn-secondary" onclick="limpar()">
+              Limpar
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {% if erro_processamento %}
+      <div class="erro-banner">&#x26A0; {{ erro_processamento }}</div>
+      {% endif %} {% if alertas is not none %}
+
+      <div class="dashboard">
+        <div class="stat-card">
+          <div class="stat-label">Analisados</div>
+          <div class="stat-value">{{ total }}</div>
+        </div>
+        <div
+          class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}"
+        >
+          <div class="stat-label">Inconsistências</div>
+          <div class="stat-value">{{ alertas|length }}</div>
+        </div>
+        {% if total > 0 %}
+        <div class="stat-card success">
+          <div class="stat-label">Conformidade</div>
+          <div class="stat-value">
+            {{ ((total - alertas|length) / total * 100)|int }}%
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if alertas|length == 0 %}
+      <div class="success-box">
+        <span class="icon">&#x2705;</span>
+        <p>Nenhuma inconsistência encontrada</p>
+        <span
+          >Todos os {{ total }} registros analisados estão em
+          conformidade.</span
+        >
+      </div>
+
+      {% else %}
+      <div class="section-divider">
+        <h3>Inconsistências</h3>
+        <div class="divider-line"></div>
+        <span class="badge-count"
+          >{{ alertas|length }} registro{{ 's' if alertas|length != 1 else ''
+          }}</span
+        >
+      </div>
+
+      {% for a in alertas %} {% set tem_critico = a.erros | selectattr("nivel",
+      "equalto", "critico") | list | length > 0 %}
+      <div class="alerta {{ '' if tem_critico else 'medio' }}">
+        <div class="alerta-header">
+          <div>
+            <div class="alerta-nome">{{ a.nome }}</div>
+            <div class="alerta-mat">Matrícula {{ a.matricula }}</div>
+          </div>
+          <div class="alerta-info">
+            <div>Início: <strong>{{ a.inicio }}</strong></div>
+            <div>Fim: <strong>{{ a.fim }}</strong></div>
+            <div>Tempo ext.: <strong>{{ a.tempo_externo }}</strong></div>
+          </div>
+        </div>
+
+        <div class="alerta-body">
+          <div class="registros-box">
+            <div class="registros-box-title">Saídas do dia</div>
+            {% for r in a.registros %}
+            <div class="registro-row">
+              <div class="registro-dot"></div>
+              <div class="registro-tempos">
+                {{ r.saida }} &#x2192; {{ r.retorno }}
+              </div>
+              <div class="registro-dur">{{ r.tempo }}</div>
+            </div>
+            {% endfor %}
+            <div class="registros-total">
+              <span>Total externo</span>
+              <span>{{ a.tempo_externo }}</span>
+            </div>
+          </div>
+
+          <div class="tags">
+            {% for e in a.erros %}
+            <span class="tag {{ e.nivel }}">{{ e.msg }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% endif %} {% endif %}
+
+      <footer>SGPD Análise &mdash; Uso interno &mdash; Correios</footer>
+    </div>
+
+    <script>
+      const form = document.getElementById("form-principal");
+      const btn = document.getElementById("btn-analisar");
+      const spin = document.getElementById("spinner");
+      const txt = document.getElementById("btn-texto");
+
+      form.addEventListener("submit", () => {
+        btn.disabled = true;
+        spin.style.display = "block";
+        txt.textContent = "Analisando...";
+      });
+
+      function limpar() {
+        const campo = document.getElementById("campo-dados");
+        campo.value = "";
+        campo.focus();
+      }
+    </script>
+  </body>
+</html>

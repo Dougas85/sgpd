@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Análise SGPD</title>
+
+    <style>
+      /* (mantive todo seu CSS intacto) */
+      :root {
+        --primary: #2563eb;
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --success: #10b981;
+
+        --radius: 14px;
+        --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui;
+        background: var(--bg);
+        color: var(--text);
+        padding: 40px 20px;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: auto;
+      }
+
+      header {
+        margin-bottom: 30px;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 160px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        padding: 14px;
+        font-family: monospace;
+        font-size: 13px;
+      }
+
+      button {
+        margin-top: 12px;
+        width: 100%;
+        padding: 14px;
+        border-radius: 10px;
+        border: none;
+        background: var(--primary);
+        color: white;
+        font-weight: 600;
+      }
+
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .card-mini {
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .alerta {
+        background: white;
+        border-radius: var(--radius);
+        padding: 18px;
+        margin-bottom: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .nome {
+        font-weight: 700;
+      }
+      .meta {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .horarios {
+        font-size: 12px;
+        margin-top: 8px;
+        margin-bottom: 10px;
+      }
+
+      /* NOVO BLOCO */
+      .registros {
+        background: #f1f5f9;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 12px;
+      }
+
+      .registro-item {
+        margin-bottom: 4px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .tag {
+        font-size: 11px;
+        padding: 5px 8px;
+        border-radius: 6px;
+        font-weight: 600;
+      }
+
+      .tag.critico {
+        background: #fee2e2;
+        color: var(--danger);
+      }
+      .tag.medio {
+        background: #fef3c7;
+        color: var(--warning);
+      }
+      .tag.leve {
+        background: #e0f2fe;
+        color: #0284c7;
+      }
+
+      .success {
+        background: #ecfdf5;
+        padding: 18px;
+        border-radius: var(--radius);
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>Análise de Distribuição</h1>
+        <p>Análise inteligente de jornada e tempo externo</p>
+      </header>
+
+      <div class="card">
+        <form method="POST">
+          <textarea
+            name="dados"
+            placeholder="Cole aqui o HTML completo do SGPD..."
+          ></textarea>
+          <button type="submit">Analisar dados</button>
+        </form>
+      </div>
+
+      {% if alertas is not none %}
+
+      <div class="dashboard">
+        <div class="card-mini">
+          <span>Total analisado</span>
+          <strong>{{ total }}</strong>
+        </div>
+        <div class="card-mini">
+          <span>Com inconsistência</span>
+          <strong>{{ alertas|length }}</strong>
+        </div>
+      </div>
+
+      {% if alertas|length == 0 %}
+      <div class="success">✓ Nenhuma inconsistência encontrada</div>
+      {% else %} {% for a in alertas %}
+      <div class="alerta">
+        <div class="nome">{{ a.nome }}</div>
+        <div class="meta">Matrícula: {{ a.matricula }}</div>
+
+        <!-- 🔥 NOVO: lista de saídas -->
+        <div class="registros">
+          <strong>Saídas do dia:</strong><br />
+
+          {% for r in a.registros %}
+          <div class="registro-item">
+            🕒 {{ r.saida }} → {{ r.retorno }} | {{ r.tempo }}
+          </div>
+          {% endfor %}
+
+          <strong>Total: {{ a.tempo_externo }}</strong>
+        </div>
+
+        <div class="tags">
+          {% for e in a.erros %} {% if "🔴" in e %}
+          <span class="tag critico">{{ e }}</span>
+          {% elif "🟡" in e %}
+          <span class="tag medio">{{ e }}</span>
+          {% else %}
+          <span class="tag leve">{{ e }}</span>
+          {% endif %} {% endfor %}
+        </div>
+      </div>
+      {% endfor %} {% endif %} {% endif %}
+    </div>
+  </body>
+</html>
