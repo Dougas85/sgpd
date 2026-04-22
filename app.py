@@ -76,7 +76,7 @@ def verificar_regra2(tempo_total):
     if tempo_total < LIMITE_MIN:
         erros.append({"msg": f"Tempo externo baixo ({tempo_total})", "nivel": "medio"})
     if tempo_total > LIMITE_MAX:
-        erros.append({"msg": f"Tempo externo alto ({tempo_total})", "nivel": "critico"})
+        erros.append({"msg": f"Tempo externo alto ({tempo_total}) - verificar intervalo", "nivel": "critico"})
     return erros
 
 

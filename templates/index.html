@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
       :root {
         --primary: #2563eb;
@@ -428,6 +429,23 @@
       .tag.medio   { background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border); }
       .tag.leve    { background: var(--primary-light); color: var(--primary); border-color: #bfdbfe; }
 
+      /* ── BTN PDF ── */
+      .btn-pdf {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; padding: 13px 20px;
+        border-radius: 8px; border: none;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white; font-family: inherit; font-size: 14px; font-weight: 600;
+        cursor: pointer; margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(15,23,42,0.3);
+        transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+        animation: fadeUp 0.5s 0.2s ease both;
+        letter-spacing: 0.1px;
+      }
+      .btn-pdf:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,23,42,0.4); }
+      .btn-pdf:active { transform: scale(0.98); }
+      .btn-pdf svg { flex-shrink: 0; }
+
       /* ── FOOTER ── */
       footer {
         text-align: center; font-size: 12px; color: #94a3b8;
@@ -504,6 +522,25 @@
         </div>
         {% endif %}
       </div>
+
+      {% if alertas|length > 0 %}
+      <button class="btn-pdf" onclick="gerarPDF()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Exportar Relatório em PDF
+      </button>
+      {% endif %}
+
+      <script>
+        const DADOS_RELATORIO = {
+          total: {{ total }},
+          inconsistencias: {{ alertas|length }},
+          conformidade: {{ ((total - alertas|length) / total * 100)|int if total > 0 else 0 }},
+          alertas: {{ alertas | tojson }}
+        };
+      </script>
 
       {% if alertas|length == 0 %}
       <div class="success-box">
@@ -617,6 +654,208 @@
       const resultados = document.getElementById('resultados');
       if (resultados) {
         setTimeout(() => resultados.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+      }
+
+      /* ── GERAÇÃO DO PDF ── */
+      function gerarPDF() {
+        if (typeof DADOS_RELATORIO === 'undefined') return;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+        const W = doc.internal.pageSize.getWidth();
+        const H = doc.internal.pageSize.getHeight();
+        const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+        const horaGeracao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+
+        const C = {
+          navy:    [10,  22,  40],
+          blue:    [37,  99,  235],
+          blueL:   [239, 246, 255],
+          red:     [220, 38,  38],
+          redBg:   [254, 226, 226],
+          amber:   [180, 83,  9],
+          amberBg: [255, 251, 235],
+          green:   [5,   150, 105],
+          greenBg: [236, 253, 245],
+          gray1:   [15,  23,  42],
+          gray2:   [71,  85,  105],
+          gray3:   [148, 163, 184],
+          border:  [226, 232, 240],
+          white:   [255, 255, 255],
+          bg:      [248, 250, 252],
+        };
+
+        function checkPage(y, needed) {
+          if (y + needed > H - 50) { doc.addPage(); return 50; }
+          return y;
+        }
+
+        // ── CABEÇALHO ──
+        doc.setFillColor(...C.navy);
+        doc.rect(0, 0, W, 80, 'F');
+        doc.setFillColor(...C.blue);
+        doc.rect(0, 78, W, 3, 'F');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.setTextColor(...C.white);
+        doc.text('RELATÓRIO DE INCONSISTÊNCIAS', 40, 36);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(147, 197, 253);
+        doc.text('Sistema SGPD — Análise de Jornada e Tempo Externo', 40, 54);
+
+        doc.setFontSize(9);
+        doc.setTextColor(...C.gray3);
+        doc.text(`Gerado em: ${hoje} às ${horaGeracao}`, 40, 68);
+
+        // ── CARDS DE RESUMO ──
+        let y = 108;
+        const cardW = (W - 80 - 20) / 3;
+        const resumo = [
+          { label: 'Funcionários Analisados', val: DADOS_RELATORIO.total,          bg: C.blueL,   cor: C.blue  },
+          { label: 'Inconsistências',         val: DADOS_RELATORIO.inconsistencias, bg: C.redBg,   cor: C.red   },
+          { label: 'Conformidade',            val: DADOS_RELATORIO.conformidade+'%',bg: C.greenBg, cor: C.green },
+        ];
+        resumo.forEach((r, i) => {
+          const x = 40 + i * (cardW + 10);
+          doc.setFillColor(...r.bg);
+          doc.roundedRect(x, y, cardW, 58, 8, 8, 'F');
+          doc.setDrawColor(...r.cor);
+          doc.setLineWidth(1);
+          doc.roundedRect(x, y, cardW, 58, 8, 8, 'S');
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(26);
+          doc.setTextColor(...r.cor);
+          doc.text(String(r.val), x + cardW / 2, y + 30, { align: 'center' });
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(...C.gray2);
+          doc.text(r.label, x + cardW / 2, y + 47, { align: 'center' });
+        });
+        y += 78;
+
+        // ── LINHA DIVISÓRIA ──
+        doc.setDrawColor(...C.border);
+        doc.setLineWidth(0.5);
+        doc.line(40, y, W - 40, y);
+        y += 16;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setTextColor(...C.blue);
+        doc.text('DETALHAMENTO DAS INCONSISTÊNCIAS', 40, y);
+        y += 18;
+
+        // ── ALERTAS ──
+        DADOS_RELATORIO.alertas.forEach((a, idx) => {
+          const temCritico = a.erros.some(e => e.nivel === 'critico');
+          const borderCor  = temCritico ? C.red : C.amber;
+          const numLinhasReg = a.registros.length;
+          const alturaCard   = 22 + 16 + (numLinhasReg * 14) + 16 + 24 + 16 + 24;
+
+          y = checkPage(y, alturaCard + 12);
+
+          // Fundo do card
+          doc.setFillColor(...C.bg);
+          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, 'F');
+          doc.setDrawColor(...borderCor);
+          doc.setLineWidth(3);
+          doc.line(40, y + 8, 40, y + alturaCard - 8);
+          doc.setDrawColor(...C.border);
+          doc.setLineWidth(0.5);
+          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, 'S');
+
+          let cy = y + 16;
+
+          // Nome e matrícula
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(...C.gray1);
+          doc.text(a.nome, 54, cy);
+
+          // Distritos (lado direito)
+          if (a.distritos && a.distritos.length > 0) {
+            const distLabel = 'Dist.: ' + a.distritos.join(', ');
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(...C.blue);
+            doc.text(distLabel, W - 50, cy, { align: 'right' });
+          }
+
+          cy += 13;
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(9);
+          doc.setTextColor(...C.gray2);
+          doc.text(`Matrícula: ${a.matricula}   |   Início: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`, 54, cy);
+          cy += 14;
+
+          // Linha separadora interna
+          doc.setDrawColor(...C.border);
+          doc.setLineWidth(0.4);
+          doc.line(54, cy, W - 54, cy);
+          cy += 10;
+
+          // Registros de saída
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(8);
+          doc.setTextColor(...C.gray3);
+          doc.text('SAÍDAS DO DIA', 54, cy);
+          cy += 11;
+
+          a.registros.forEach(r => {
+            doc.setFillColor(...C.white);
+            doc.roundedRect(54, cy - 8, W - 108, 11, 3, 3, 'F');
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(9);
+            doc.setTextColor(...C.gray1);
+            doc.text(`${r.saida}  →  ${r.retorno}`, 60, cy);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(...C.blue);
+            doc.text(r.tempo, W - 58, cy, { align: 'right' });
+            cy += 14;
+          });
+
+          cy += 4;
+          doc.setDrawColor(...C.border);
+          doc.setLineWidth(0.4);
+          doc.line(54, cy, W - 54, cy);
+          cy += 10;
+
+          // Tags de erro
+          let tx = 54;
+          a.erros.forEach(e => {
+            const isCrit = e.nivel === 'critico';
+            const tagBg  = isCrit ? C.redBg   : C.amberBg;
+            const tagCor = isCrit ? C.red      : C.amber;
+            const tagW   = doc.getTextWidth(e.msg) + 16;
+            if (tx + tagW > W - 54) { tx = 54; cy += 16; }
+            doc.setFillColor(...tagBg);
+            doc.roundedRect(tx, cy - 8, tagW, 13, 4, 4, 'F');
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(8);
+            doc.setTextColor(...tagCor);
+            doc.text(e.msg, tx + 8, cy);
+            tx += tagW + 6;
+          });
+
+          y += alturaCard + 12;
+        });
+
+        // ── RODAPÉ ──
+        const totalPages = doc.internal.getNumberOfPages();
+        for (let p = 1; p <= totalPages; p++) {
+          doc.setPage(p);
+          doc.setFillColor(...C.navy);
+          doc.rect(0, H - 28, W, 28, 'F');
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8);
+          doc.setTextColor(148, 197, 253);
+          doc.text(`SGPD Análise — Uso interno — Correios  |  ${hoje}`, 40, H - 10);
+          doc.text(`Página ${p} de ${totalPages}`, W - 40, H - 10, { align: 'right' });
+        }
+
+        doc.save(`relatorio_sgpd_${new Date().toISOString().slice(0,10)}.pdf`);
       }
     </script>
   </body>
