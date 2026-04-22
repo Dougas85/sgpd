@@ -28,11 +28,12 @@ def extrair_dados(html):
             continue
         dados.append({
             "matricula": cols[0].text.strip(),
-            "nome": cols[1].text.strip(),
-            "inicio": parse_hora(cols[4].text),
-            "saida": parse_hora(cols[5].text),
-            "retorno": parse_hora(cols[6].text),
-            "fim": parse_hora(cols[7].text),
+            "nome":      cols[1].text.strip(),
+            "distrito":  cols[2].text.strip(),
+            "inicio":    parse_hora(cols[4].text),
+            "saida":     parse_hora(cols[5].text),
+            "retorno":   parse_hora(cols[6].text),
+            "fim":       parse_hora(cols[7].text),
         })
     return dados
 
@@ -42,7 +43,9 @@ def agrupar_dados(dados):
     for d in dados:
         mat = d["matricula"]
         if mat not in agrupado:
-            agrupado[mat] = {"nome": d["nome"], "registros": [], "inicios": [], "fins": []}
+            agrupado[mat] = {"nome": d["nome"], "registros": [], "inicios": [], "fins": [], "distritos": set()}
+        if d["distrito"]:
+            agrupado[mat]["distritos"].add(d["distrito"])
         if d["inicio"]:
             agrupado[mat]["inicios"].append(d["inicio"])
         if d["fim"]:
@@ -132,13 +135,14 @@ def processar_funcionario(mat, info):
         return None
 
     return {
-        "matricula": mat,
-        "nome": info["nome"],
-        "inicio": inicio.strftime("%H:%M:%S") if inicio else "-",
-        "fim": fim.strftime("%H:%M:%S") if fim else "-",
+        "matricula":     mat,
+        "nome":          info["nome"],
+        "distritos":     sorted(info["distritos"], key=lambda x: x.zfill(10)),
+        "inicio":        inicio.strftime("%H:%M:%S") if inicio else "-",
+        "fim":           fim.strftime("%H:%M:%S") if fim else "-",
         "tempo_externo": str(tempo_total),
-        "registros": registros_saida,
-        "erros": erros,
+        "registros":     registros_saida,
+        "erros":         erros,
     }
 
 

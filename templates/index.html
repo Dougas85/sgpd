@@ -526,6 +526,9 @@
           <div>
             <div class="alerta-nome">{{ a.nome }}</div>
             <div class="alerta-mat">Matrícula {{ a.matricula }}</div>
+            {% if a.distritos %}
+            <div class="alerta-mat">Distrito{{ 's' if a.distritos|length > 1 else '' }}: {{ a.distritos|join(', ') }}</div>
+            {% endif %}
           </div>
           <div class="alerta-info">
             <div>Início: <strong>{{ a.inicio }}</strong></div>
