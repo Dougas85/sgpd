@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 LIMITE_MIN = timedelta(hours=5)
 LIMITE_MAX = timedelta(hours=6, minutes=30)
 LIMITE_SAIDA_INICIO = timedelta(minutes=15)
-LIMITE_TPC = timedelta(minutes=15)
+LIMITE_TPC = timedelta(minutes=5)
 HORA_MANHA = datetime.strptime("12:00:00", "%H:%M:%S")
 HORA_CORTE_INTERVALO = datetime.strptime("14:30:00", "%H:%M:%S")
 
