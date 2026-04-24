@@ -31,11 +31,16 @@
         --success-bg: #ecfdf5;
         --success-border: #a7f3d0;
         --radius: 12px;
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
-        --shadow: 0 4px 20px rgba(0,0,0,0.1);
+        --shadow-sm:
+          0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
 
-      * { margin: 0; padding: 0; box-sizing: border-box; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
       body {
         font-family: "Inter", "Segoe UI", system-ui, sans-serif;
@@ -45,22 +50,111 @@
       }
 
       /* ── KEYFRAMES ── */
-      @keyframes spin        { to { transform: rotate(360deg); } }
-      @keyframes fadeUp      { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      @keyframes slideIn     { from { opacity: 0; transform: translateX(-12px); } to { opacity: 1; transform: translateX(0); } }
-      @keyframes growLine    { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-      @keyframes pulseBadge  { 0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0.35); } 60% { box-shadow: 0 0 0 7px rgba(220,38,38,0); } }
-      @keyframes dotDrift    { from { transform: translate(0,0); } to { transform: translate(28px,28px); } }
-      @keyframes topbarFlow  { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
-      @keyframes shimmerBar  { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
-      @keyframes titleGlow   { 0%,100% { background-position: 0% center; } 50% { background-position: 100% center; } }
-      @keyframes badgePop    { 0% { transform: scale(0.8); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
-      @keyframes statPop     { 0% { transform: scale(0.9) translateY(10px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes growLine {
+        from {
+          transform: scaleX(0);
+        }
+        to {
+          transform: scaleX(1);
+        }
+      }
+      @keyframes pulseBadge {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35);
+        }
+        60% {
+          box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
+        }
+      }
+      @keyframes dotDrift {
+        from {
+          transform: translate(0, 0);
+        }
+        to {
+          transform: translate(28px, 28px);
+        }
+      }
+      @keyframes topbarFlow {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      @keyframes shimmerBar {
+        0% {
+          background-position: 200% center;
+        }
+        100% {
+          background-position: -200% center;
+        }
+      }
+      @keyframes titleGlow {
+        0%,
+        100% {
+          background-position: 0% center;
+        }
+        50% {
+          background-position: 100% center;
+        }
+      }
+      @keyframes badgePop {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      @keyframes statPop {
+        0% {
+          transform: scale(0.9) translateY(10px);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
 
       /* ── PROGRESS BAR ── */
       .progress-bar {
         position: fixed;
-        top: 52px; left: 0;
+        top: 52px;
+        left: 0;
         height: 3px;
         width: 0%;
         z-index: 200;
@@ -73,7 +167,14 @@
 
       /* ── TOPBAR ── */
       .topbar {
-        background: linear-gradient(90deg, #1e40af, #2563eb, #3b82f6, #2563eb, #1e40af);
+        background: linear-gradient(
+          90deg,
+          #1e40af,
+          #2563eb,
+          #3b82f6,
+          #2563eb,
+          #1e40af
+        );
         background-size: 300% 100%;
         animation: topbarFlow 10s ease infinite;
         padding: 0 28px;
@@ -82,21 +183,38 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
-        box-shadow: 0 2px 14px rgba(37,99,235,0.45);
+        box-shadow: 0 2px 14px rgba(37, 99, 235, 0.45);
         position: sticky;
         top: 0;
         z-index: 100;
       }
       .topbar-icon {
-        width: 28px; height: 28px;
-        background: rgba(255,255,255,0.2);
+        width: 28px;
+        height: 28px;
+        background: rgba(255, 255, 255, 0.2);
         border-radius: 7px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 14px; flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
       }
-      .topbar-title { font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.1px; }
-      .topbar-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.28); }
-      .topbar-sub { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 400; }
+      .topbar-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        letter-spacing: -0.1px;
+      }
+      .topbar-divider {
+        width: 1px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.28);
+      }
+      .topbar-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.65);
+        font-weight: 400;
+      }
 
       /* ── HERO ── */
       .hero {
@@ -107,24 +225,37 @@
         background: linear-gradient(180deg, #eef2ff 0%, #f1f5f9 100%);
       }
       .hero::before {
-        content: '';
+        content: "";
         position: absolute;
         inset: -28px;
-        background-image: radial-gradient(circle, rgba(37,99,235,0.12) 1px, transparent 1px);
+        background-image: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.12) 1px,
+          transparent 1px
+        );
         background-size: 28px 28px;
         animation: dotDrift 18s linear infinite;
         pointer-events: none;
       }
       .hero::after {
-        content: '';
+        content: "";
         position: absolute;
-        top: -60px; left: 50%;
+        top: -60px;
+        left: 50%;
         transform: translateX(-50%);
-        width: 600px; height: 320px;
-        background: radial-gradient(ellipse, rgba(37,99,235,0.1) 0%, transparent 70%);
+        width: 600px;
+        height: 320px;
+        background: radial-gradient(
+          ellipse,
+          rgba(37, 99, 235, 0.1) 0%,
+          transparent 70%
+        );
         pointer-events: none;
       }
-      .hero > * { position: relative; z-index: 1; }
+      .hero > * {
+        position: relative;
+        z-index: 1;
+      }
 
       .hero-badge {
         display: inline-flex;
@@ -139,8 +270,8 @@
         border: 1px solid #bfdbfe;
         margin-bottom: 18px;
         letter-spacing: 0.2px;
-        box-shadow: 0 2px 8px rgba(37,99,235,0.12);
-        animation: badgePop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
+        animation: badgePop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       }
 
       .hero h1 {
@@ -152,7 +283,12 @@
         animation: fadeUp 0.6s 0.1s ease both;
       }
       .hero h1 .highlight {
-        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%);
+        background: linear-gradient(
+          135deg,
+          #2563eb 0%,
+          #7c3aed 50%,
+          #2563eb 100%
+        );
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -187,7 +323,8 @@
         animation: fadeUp 0.5s 0.3s ease both;
       }
       .card-label {
-        font-size: 11px; font-weight: 700;
+        font-size: 11px;
+        font-weight: 700;
         color: var(--muted);
         text-transform: uppercase;
         letter-spacing: 0.7px;
@@ -207,17 +344,26 @@
         background: #f8fafc;
         resize: vertical;
         outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          background 0.2s;
         line-height: 1.5;
       }
       textarea:focus {
         border-color: var(--primary);
         background: white;
-        box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
       }
-      textarea::placeholder { color: #94a3b8; }
+      textarea::placeholder {
+        color: #94a3b8;
+      }
 
-      .form-actions { display: flex; gap: 10px; margin-top: 12px; }
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
 
       .btn-primary {
         flex: 1;
@@ -230,19 +376,31 @@
         font-weight: 600;
         font-size: 14px;
         cursor: pointer;
-        transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
-        display: flex; align-items: center; justify-content: center;
+        transition:
+          transform 0.15s,
+          box-shadow 0.2s,
+          filter 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         gap: 8px;
-        box-shadow: 0 2px 8px rgba(37,99,235,0.35);
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
         letter-spacing: 0.1px;
       }
       .btn-primary:hover {
         filter: brightness(1.08);
-        box-shadow: 0 6px 18px rgba(37,99,235,0.45);
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
         transform: translateY(-1px);
       }
-      .btn-primary:active { transform: scale(0.98) translateY(0); }
-      .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; box-shadow: none; transform: none; }
+      .btn-primary:active {
+        transform: scale(0.98) translateY(0);
+      }
+      .btn-primary:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        box-shadow: none;
+        transform: none;
+      }
 
       .btn-secondary {
         padding: 12px 18px;
@@ -254,17 +412,28 @@
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
-        transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.1s;
+        transition:
+          border-color 0.15s,
+          color 0.15s,
+          background 0.15s,
+          transform 0.1s;
       }
-      .btn-secondary:hover { border-color: #cbd5e1; color: var(--text); background: #f8fafc; transform: translateY(-1px); }
+      .btn-secondary:hover {
+        border-color: #cbd5e1;
+        color: var(--text);
+        background: #f8fafc;
+        transform: translateY(-1px);
+      }
 
       .spinner {
-        width: 15px; height: 15px;
-        border: 2px solid rgba(255,255,255,0.35);
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.35);
         border-top-color: white;
         border-radius: 50%;
         animation: spin 0.65s linear infinite;
-        display: none; flex-shrink: 0;
+        display: none;
+        flex-shrink: 0;
       }
 
       /* ── ERRO BANNER ── */
@@ -277,7 +446,9 @@
         font-size: 13.5px;
         font-weight: 500;
         margin-bottom: 20px;
-        display: flex; align-items: center; gap: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         animation: fadeUp 0.4s ease both;
       }
 
@@ -297,46 +468,76 @@
         text-align: center;
         opacity: 0;
         animation: statPop 0.5s ease forwards;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
         cursor: default;
       }
-      .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-      .stat-card:nth-child(1) { animation-delay: 0.05s; }
-      .stat-card:nth-child(2) { animation-delay: 0.15s; }
-      .stat-card:nth-child(3) { animation-delay: 0.25s; }
+      .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow);
+      }
+      .stat-card:nth-child(1) {
+        animation-delay: 0.05s;
+      }
+      .stat-card:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .stat-card:nth-child(3) {
+        animation-delay: 0.25s;
+      }
       .stat-label {
-        font-size: 11px; color: var(--muted); font-weight: 600;
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 600;
         margin-bottom: 8px;
-        text-transform: uppercase; letter-spacing: 0.6px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
       }
       .stat-value {
-        font-size: 40px; font-weight: 800;
+        font-size: 40px;
+        font-weight: 800;
         color: var(--text);
-        line-height: 1; letter-spacing: -2.5px;
+        line-height: 1;
+        letter-spacing: -2.5px;
       }
-      .stat-card.danger  .stat-value { color: var(--danger); }
-      .stat-card.success .stat-value { color: var(--success); }
+      .stat-card.danger .stat-value {
+        color: var(--danger);
+      }
+      .stat-card.success .stat-value {
+        color: var(--success);
+      }
 
       /* ── DIVIDER ── */
       .section-divider {
-        display: flex; align-items: center; gap: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
         margin-bottom: 16px;
         animation: fadeUp 0.4s 0.1s ease both;
       }
       .section-divider h3 {
-        font-size: 12px; font-weight: 700; color: var(--muted);
-        text-transform: uppercase; letter-spacing: 0.6px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
         white-space: nowrap;
       }
       .section-divider .divider-line {
-        flex: 1; height: 1px; background: var(--border);
+        flex: 1;
+        height: 1px;
+        background: var(--border);
         transform-origin: left;
         animation: growLine 0.7s 0.2s ease both;
       }
       .badge-count {
-        font-size: 11px; font-weight: 700;
-        padding: 3px 10px; border-radius: 99px;
-        background: var(--danger-bg); color: var(--danger);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 99px;
+        background: var(--danger-bg);
+        color: var(--danger);
         border: 1px solid var(--danger-border);
         white-space: nowrap;
         animation: pulseBadge 2.5s ease infinite;
@@ -348,12 +549,26 @@
         border: 1px solid var(--success-border);
         border-radius: var(--radius);
         padding: 40px 24px;
-        text-align: center; color: var(--success);
+        text-align: center;
+        color: var(--success);
         animation: fadeUp 0.5s ease both;
       }
-      .success-box .icon { font-size: 36px; display: block; margin-bottom: 14px; animation: badgePop 0.7s cubic-bezier(0.34,1.56,0.64,1) both; }
-      .success-box p { font-weight: 700; font-size: 17px; }
-      .success-box span { font-size: 13px; opacity: 0.7; margin-top: 6px; display: block; }
+      .success-box .icon {
+        font-size: 36px;
+        display: block;
+        margin-bottom: 14px;
+        animation: badgePop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .success-box p {
+        font-weight: 700;
+        font-size: 17px;
+      }
+      .success-box span {
+        font-size: 13px;
+        opacity: 0.7;
+        margin-top: 6px;
+        display: block;
+      }
 
       /* ── ALERTAS ── */
       .alerta {
@@ -366,24 +581,52 @@
         overflow: hidden;
         opacity: 0;
         animation: slideIn 0.4s ease forwards;
-        transition: box-shadow 0.2s, transform 0.2s;
+        transition:
+          box-shadow 0.2s,
+          transform 0.2s;
       }
-      .alerta:hover { box-shadow: var(--shadow); transform: translateX(3px); }
-      .alerta.medio { border-left-color: #f59e0b; }
+      .alerta:hover {
+        box-shadow: var(--shadow);
+        transform: translateX(3px);
+      }
+      .alerta.medio {
+        border-left-color: #f59e0b;
+      }
 
       .alerta-header {
         padding: 14px 18px 10px;
-        display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
       }
-      .alerta-nome { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
-      .alerta-mat  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+      .alerta-nome {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+        letter-spacing: -0.2px;
+      }
+      .alerta-mat {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
       .alerta-info {
-        text-align: right; font-size: 12px; color: var(--muted);
-        white-space: nowrap; line-height: 1.8; flex-shrink: 0;
+        text-align: right;
+        font-size: 12px;
+        color: var(--muted);
+        white-space: nowrap;
+        line-height: 1.8;
+        flex-shrink: 0;
       }
-      .alerta-info strong { color: var(--text); font-weight: 600; }
+      .alerta-info strong {
+        color: var(--text);
+        font-weight: 600;
+      }
 
-      .alerta-body { padding: 0 18px 16px; }
+      .alerta-body {
+        padding: 0 18px 16px;
+      }
 
       .registros-box {
         background: #f8fafc;
@@ -393,74 +636,168 @@
         margin-bottom: 12px;
       }
       .registros-box-title {
-        font-size: 10.5px; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 0.6px;
-        color: var(--muted); margin-bottom: 10px;
+        font-size: 10.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        margin-bottom: 10px;
       }
       .registro-row {
-        display: flex; align-items: center; gap: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
         padding: 6px 0;
         border-bottom: 1px solid var(--border);
         font-size: 12.5px;
         transition: background 0.15s;
       }
-      .registro-row:hover { background: #f1f5f9; margin: 0 -14px; padding: 6px 14px; }
-      .registro-row:last-of-type { border-bottom: none; }
-      .registro-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
-      .registro-tempos { flex: 1; font-family: "Consolas", monospace; color: var(--text); }
-      .registro-dur { font-family: "Consolas", monospace; font-weight: 700; color: var(--primary); font-size: 12px; }
+      .registro-row:hover {
+        background: #f1f5f9;
+        margin: 0 -14px;
+        padding: 6px 14px;
+      }
+      .registro-row:last-of-type {
+        border-bottom: none;
+      }
+      .registro-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary);
+        flex-shrink: 0;
+      }
+      .registro-tempos {
+        flex: 1;
+        font-family: "Consolas", monospace;
+        color: var(--text);
+      }
+      .registro-dur {
+        font-family: "Consolas", monospace;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 12px;
+      }
       .registros-total {
-        display: flex; justify-content: space-between;
-        margin-top: 10px; padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        padding-top: 10px;
         border-top: 1px solid var(--border);
-        font-size: 12.5px; font-weight: 600; color: var(--text);
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text);
       }
 
-      .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
       .tag {
-        font-size: 11.5px; padding: 5px 10px;
-        border-radius: 6px; font-weight: 600;
-        border: 1px solid transparent; letter-spacing: 0.1px;
-        transition: transform 0.15s, box-shadow 0.15s;
+        font-size: 11.5px;
+        padding: 5px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        border: 1px solid transparent;
+        letter-spacing: 0.1px;
+        transition:
+          transform 0.15s,
+          box-shadow 0.15s;
         cursor: default;
       }
-      .tag:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
-      .tag.critico { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
-      .tag.medio   { background: var(--warning-bg); color: var(--warning); border-color: var(--warning-border); }
-      .tag.leve    { background: var(--primary-light); color: var(--primary); border-color: #bfdbfe; }
+      .tag:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      }
+      .tag.critico {
+        background: var(--danger-bg);
+        color: var(--danger);
+        border-color: var(--danger-border);
+      }
+      .tag.medio {
+        background: var(--warning-bg);
+        color: var(--warning);
+        border-color: var(--warning-border);
+      }
+      .tag.leve {
+        background: var(--primary-light);
+        color: var(--primary);
+        border-color: #bfdbfe;
+      }
 
       /* ── BTN PDF ── */
       .btn-pdf {
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-        width: 100%; padding: 13px 20px;
-        border-radius: 8px; border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 13px 20px;
+        border-radius: 8px;
+        border: none;
         background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: white; font-family: inherit; font-size: 14px; font-weight: 600;
-        cursor: pointer; margin-bottom: 20px;
-        box-shadow: 0 2px 10px rgba(15,23,42,0.3);
-        transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+        color: white;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.3);
+        transition:
+          filter 0.2s,
+          transform 0.15s,
+          box-shadow 0.2s;
         animation: fadeUp 0.5s 0.2s ease both;
         letter-spacing: 0.1px;
       }
-      .btn-pdf:hover { filter: brightness(1.15); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(15,23,42,0.4); }
-      .btn-pdf:active { transform: scale(0.98); }
-      .btn-pdf svg { flex-shrink: 0; }
+      .btn-pdf:hover {
+        filter: brightness(1.15);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.4);
+      }
+      .btn-pdf:active {
+        transform: scale(0.98);
+      }
+      .btn-pdf svg {
+        flex-shrink: 0;
+      }
 
       /* ── FOOTER ── */
       footer {
-        text-align: center; font-size: 12px; color: #94a3b8;
-        padding-top: 40px; line-height: 1.8;
+        text-align: center;
+        font-size: 12px;
+        color: #94a3b8;
+        padding-top: 40px;
+        line-height: 1.8;
       }
 
       /* ── RESPONSIVE ── */
       @media (max-width: 580px) {
-        .topbar-divider, .topbar-sub { display: none; }
-        .hero h1 { font-size: 26px; }
-        .dashboard { gap: 8px; }
-        .stat-value { font-size: 30px; letter-spacing: -1.5px; }
-        .alerta-header { flex-direction: column; gap: 8px; }
-        .alerta-info { text-align: left; }
-        .form-actions { flex-direction: column; }
+        .topbar-divider,
+        .topbar-sub {
+          display: none;
+        }
+        .hero h1 {
+          font-size: 26px;
+        }
+        .dashboard {
+          gap: 8px;
+        }
+        .stat-value {
+          font-size: 30px;
+          letter-spacing: -1.5px;
+        }
+        .alerta-header {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .alerta-info {
+          text-align: left;
+        }
+        .form-actions {
+          flex-direction: column;
+        }
       }
     </style>
   </head>
@@ -478,7 +815,10 @@
     <div class="hero">
       <div class="hero-badge">&#x1F4CA; Ferramenta de Análise</div>
       <h1>Análise de <span class="highlight">Distribuição</span></h1>
-      <p>Cole o HTML exportado do SGPD para identificar automaticamente inconsistências de jornada.</p>
+      <p>
+        Cole o HTML exportado do SGPD para identificar automaticamente
+        inconsistências de jornada.
+      </p>
     </div>
 
     <div class="container">
@@ -495,39 +835,103 @@
               <div class="spinner" id="spinner"></div>
               <span id="btn-texto">Analisar dados</span>
             </button>
-            <button type="button" class="btn-secondary" onclick="limpar()">Limpar</button>
+            <button type="button" class="btn-secondary" onclick="limpar()">
+              Limpar
+            </button>
           </div>
         </form>
       </div>
 
       {% if erro_processamento %}
       <div class="erro-banner">&#x26A0; {{ erro_processamento }}</div>
+      {% endif %} {% if alertas is not none %} {% if data_consulta %}
+      <div
+        style="
+          text-align: center;
+          margin-bottom: 16px;
+          animation: fadeUp 0.4s ease both;
+        "
+      >
+        <span
+          style="
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: white;
+            border: 1px solid #bfdbfe;
+            border-radius: 99px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #2563eb;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+          "
+        >
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          Data consultada: {{ data_consulta }}
+        </span>
+      </div>
       {% endif %}
-
-      {% if alertas is not none %}
 
       <div class="dashboard" id="resultados">
         <div class="stat-card">
           <div class="stat-label">Analisados</div>
           <div class="stat-value" data-target="{{ total }}">{{ total }}</div>
         </div>
-        <div class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}">
+        <div
+          class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}"
+        >
           <div class="stat-label">Inconsistências</div>
-          <div class="stat-value" data-target="{{ alertas|length }}">{{ alertas|length }}</div>
+          <div class="stat-value" data-target="{{ alertas|length }}">
+            {{ alertas|length }}
+          </div>
         </div>
         {% if total > 0 %}
         <div class="stat-card success">
           <div class="stat-label">Conformidade</div>
-          <div class="stat-value" data-target="{{ ((total - alertas|length) / total * 100)|int }}" data-suffix="%">{{ ((total - alertas|length) / total * 100)|int }}%</div>
+          <div
+            class="stat-value"
+            data-target="{{ ((total - alertas|length) / total * 100)|int }}"
+            data-suffix="%"
+          >
+            {{ ((total - alertas|length) / total * 100)|int }}%
+          </div>
         </div>
         {% endif %}
       </div>
 
       {% if alertas|length > 0 %}
       <button class="btn-pdf" onclick="gerarPDF()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+          />
+          <polyline points="14 2 14 8 20 8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+          <polyline points="10 9 9 9 8 9" />
         </svg>
         Exportar Relatório em PDF
       </button>
@@ -538,6 +942,7 @@
           total: {{ total }},
           inconsistencias: {{ alertas|length }},
           conformidade: {{ ((total - alertas|length) / total * 100)|int if total > 0 else 0 }},
+          data_consulta: {{ data_consulta | tojson }},
           alertas: {{ alertas | tojson }}
         };
       </script>
@@ -546,25 +951,34 @@
       <div class="success-box">
         <span class="icon">&#x2705;</span>
         <p>Nenhuma inconsistência encontrada</p>
-        <span>Todos os {{ total }} registros analisados estão em conformidade.</span>
+        <span
+          >Todos os {{ total }} registros analisados estão em
+          conformidade.</span
+        >
       </div>
 
       {% else %}
       <div class="section-divider">
         <h3>Inconsistências</h3>
         <div class="divider-line"></div>
-        <span class="badge-count">{{ alertas|length }} registro{{ 's' if alertas|length != 1 else '' }}</span>
+        <span class="badge-count"
+          >{{ alertas|length }} registro{{ 's' if alertas|length != 1 else ''
+          }}</span
+        >
       </div>
 
-      {% for a in alertas %}
-      {% set tem_critico = a.erros | selectattr("nivel", "equalto", "critico") | list | length > 0 %}
+      {% for a in alertas %} {% set tem_critico = a.erros | selectattr("nivel",
+      "equalto", "critico") | list | length > 0 %}
       <div class="alerta {{ '' if tem_critico else 'medio' }}">
         <div class="alerta-header">
           <div>
             <div class="alerta-nome">{{ a.nome }}</div>
             <div class="alerta-mat">Matrícula {{ a.matricula }}</div>
             {% if a.distritos %}
-            <div class="alerta-mat">Distrito{{ 's' if a.distritos|length > 1 else '' }}: {{ a.distritos|join(', ') }}</div>
+            <div class="alerta-mat">
+              Distrito{{ 's' if a.distritos|length > 1 else '' }}: {{
+              a.distritos|join(', ') }}
+            </div>
             {% endif %}
           </div>
           <div class="alerta-info">
@@ -580,7 +994,9 @@
             {% for r in a.registros %}
             <div class="registro-row">
               <div class="registro-dot"></div>
-              <div class="registro-tempos">{{ r.saida }} &#x2192; {{ r.retorno }}</div>
+              <div class="registro-tempos">
+                {{ r.saida }} &#x2192; {{ r.retorno }}
+              </div>
               <div class="registro-dur">{{ r.tempo }}</div>
             </div>
             {% endfor %}
@@ -597,39 +1013,37 @@
           </div>
         </div>
       </div>
-      {% endfor %}
-      {% endif %}
-      {% endif %}
+      {% endfor %} {% endif %} {% endif %}
 
       <footer>SGPD Análise &mdash; Uso interno &mdash; Correios</footer>
     </div>
 
     <script>
       /* ── LOADING ── */
-      const form = document.getElementById('form-principal');
-      const btn  = document.getElementById('btn-analisar');
-      const spin = document.getElementById('spinner');
-      const txt  = document.getElementById('btn-texto');
-      const bar  = document.getElementById('progress-bar');
+      const form = document.getElementById("form-principal");
+      const btn = document.getElementById("btn-analisar");
+      const spin = document.getElementById("spinner");
+      const txt = document.getElementById("btn-texto");
+      const bar = document.getElementById("progress-bar");
 
-      form.addEventListener('submit', () => {
+      form.addEventListener("submit", () => {
         btn.disabled = true;
-        spin.style.display = 'block';
-        txt.textContent = 'Analisando...';
-        bar.style.width = '0%';
-        setTimeout(() => bar.style.width = '55%', 80);
-        setTimeout(() => bar.style.width = '85%', 900);
+        spin.style.display = "block";
+        txt.textContent = "Analisando...";
+        bar.style.width = "0%";
+        setTimeout(() => (bar.style.width = "55%"), 80);
+        setTimeout(() => (bar.style.width = "85%"), 900);
       });
 
       function limpar() {
-        document.getElementById('campo-dados').value = '';
-        document.getElementById('campo-dados').focus();
+        document.getElementById("campo-dados").value = "";
+        document.getElementById("campo-dados").focus();
       }
 
       /* ── COUNTER ANIMATION ── */
       function animateCounter(el) {
-        const target  = parseInt(el.dataset.target);
-        const suffix  = el.dataset.suffix || '';
+        const target = parseInt(el.dataset.target);
+        const suffix = el.dataset.suffix || "";
         if (isNaN(target) || target === 0) return;
         const duration = 900;
         const start = performance.now();
@@ -639,99 +1053,133 @@
           el.textContent = Math.round(eased * target) + suffix;
           if (p < 1) requestAnimationFrame(tick);
         };
-        el.textContent = '0' + suffix;
+        el.textContent = "0" + suffix;
         requestAnimationFrame(tick);
       }
 
-      document.querySelectorAll('.stat-value[data-target]').forEach(animateCounter);
+      document
+        .querySelectorAll(".stat-value[data-target]")
+        .forEach(animateCounter);
 
       /* ── STAGGERED ALERTS ── */
-      document.querySelectorAll('.alerta').forEach((el, i) => {
+      document.querySelectorAll(".alerta").forEach((el, i) => {
         el.style.animationDelay = `${0.05 + i * 0.08}s`;
       });
 
       /* ── SCROLL TO RESULTS ── */
-      const resultados = document.getElementById('resultados');
+      const resultados = document.getElementById("resultados");
       if (resultados) {
-        setTimeout(() => resultados.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+        setTimeout(
+          () =>
+            resultados.scrollIntoView({ behavior: "smooth", block: "start" }),
+          200,
+        );
       }
 
       /* ── GERAÇÃO DO PDF ── */
       function gerarPDF() {
-        if (typeof DADOS_RELATORIO === 'undefined') return;
+        if (typeof DADOS_RELATORIO === "undefined") return;
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+        const doc = new jsPDF({ unit: "pt", format: "a4" });
         const W = doc.internal.pageSize.getWidth();
         const H = doc.internal.pageSize.getHeight();
-        const hoje = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
-        const horaGeracao = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        const hoje = new Date().toLocaleDateString("pt-BR", {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        });
+        const horaGeracao = new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
 
         const C = {
-          navy:    [10,  22,  40],
-          blue:    [37,  99,  235],
-          blueL:   [239, 246, 255],
-          red:     [220, 38,  38],
-          redBg:   [254, 226, 226],
-          amber:   [180, 83,  9],
+          navy: [10, 22, 40],
+          blue: [37, 99, 235],
+          blueL: [239, 246, 255],
+          red: [220, 38, 38],
+          redBg: [254, 226, 226],
+          amber: [180, 83, 9],
           amberBg: [255, 251, 235],
-          green:   [5,   150, 105],
+          green: [5, 150, 105],
           greenBg: [236, 253, 245],
-          gray1:   [15,  23,  42],
-          gray2:   [71,  85,  105],
-          gray3:   [148, 163, 184],
-          border:  [226, 232, 240],
-          white:   [255, 255, 255],
-          bg:      [248, 250, 252],
+          gray1: [15, 23, 42],
+          gray2: [71, 85, 105],
+          gray3: [148, 163, 184],
+          border: [226, 232, 240],
+          white: [255, 255, 255],
+          bg: [248, 250, 252],
         };
 
         function checkPage(y, needed) {
-          if (y + needed > H - 50) { doc.addPage(); return 50; }
+          if (y + needed > H - 50) {
+            doc.addPage();
+            return 50;
+          }
           return y;
         }
 
         // ── CABEÇALHO ──
         doc.setFillColor(...C.navy);
-        doc.rect(0, 0, W, 80, 'F');
+        doc.rect(0, 0, W, 80, "F");
         doc.setFillColor(...C.blue);
-        doc.rect(0, 78, W, 3, 'F');
+        doc.rect(0, 78, W, 3, "F");
 
-        doc.setFont('helvetica', 'bold');
+        doc.setFont("helvetica", "bold");
         doc.setFontSize(20);
         doc.setTextColor(...C.white);
-        doc.text('RELATÓRIO DE INCONSISTÊNCIAS', 40, 36);
+        doc.text("RELATÓRIO DE INCONSISTÊNCIAS", 40, 36);
 
-        doc.setFont('helvetica', 'normal');
+        doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor(147, 197, 253);
-        doc.text('Sistema SGPD — Análise de Jornada e Tempo Externo', 40, 54);
+        doc.text("Sistema SGPD — Análise de Jornada e Tempo Externo", 40, 54);
 
         doc.setFontSize(9);
         doc.setTextColor(...C.gray3);
-        doc.text(`Gerado em: ${hoje} às ${horaGeracao}`, 40, 68);
+        const dataRef = DADOS_RELATORIO.data_consulta
+          ? `Data consultada: ${DADOS_RELATORIO.data_consulta}   |   `
+          : "";
+        doc.text(`${dataRef}Gerado em: ${hoje} às ${horaGeracao}`, 40, 68);
 
         // ── CARDS DE RESUMO ──
         let y = 108;
         const cardW = (W - 80 - 20) / 3;
         const resumo = [
-          { label: 'Funcionários Analisados', val: DADOS_RELATORIO.total,          bg: C.blueL,   cor: C.blue  },
-          { label: 'Inconsistências',         val: DADOS_RELATORIO.inconsistencias, bg: C.redBg,   cor: C.red   },
-          { label: 'Conformidade',            val: DADOS_RELATORIO.conformidade+'%',bg: C.greenBg, cor: C.green },
+          {
+            label: "Funcionários Analisados",
+            val: DADOS_RELATORIO.total,
+            bg: C.blueL,
+            cor: C.blue,
+          },
+          {
+            label: "Inconsistências",
+            val: DADOS_RELATORIO.inconsistencias,
+            bg: C.redBg,
+            cor: C.red,
+          },
+          {
+            label: "Conformidade",
+            val: DADOS_RELATORIO.conformidade + "%",
+            bg: C.greenBg,
+            cor: C.green,
+          },
         ];
         resumo.forEach((r, i) => {
           const x = 40 + i * (cardW + 10);
           doc.setFillColor(...r.bg);
-          doc.roundedRect(x, y, cardW, 58, 8, 8, 'F');
+          doc.roundedRect(x, y, cardW, 58, 8, 8, "F");
           doc.setDrawColor(...r.cor);
           doc.setLineWidth(1);
-          doc.roundedRect(x, y, cardW, 58, 8, 8, 'S');
-          doc.setFont('helvetica', 'bold');
+          doc.roundedRect(x, y, cardW, 58, 8, 8, "S");
+          doc.setFont("helvetica", "bold");
           doc.setFontSize(26);
           doc.setTextColor(...r.cor);
-          doc.text(String(r.val), x + cardW / 2, y + 30, { align: 'center' });
-          doc.setFont('helvetica', 'normal');
+          doc.text(String(r.val), x + cardW / 2, y + 30, { align: "center" });
+          doc.setFont("helvetica", "normal");
           doc.setFontSize(8);
           doc.setTextColor(...C.gray2);
-          doc.text(r.label, x + cardW / 2, y + 47, { align: 'center' });
+          doc.text(r.label, x + cardW / 2, y + 47, { align: "center" });
         });
         y += 78;
 
@@ -741,53 +1189,57 @@
         doc.line(40, y, W - 40, y);
         y += 16;
 
-        doc.setFont('helvetica', 'bold');
+        doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
         doc.setTextColor(...C.blue);
-        doc.text('DETALHAMENTO DAS INCONSISTÊNCIAS', 40, y);
+        doc.text("DETALHAMENTO DAS INCONSISTÊNCIAS", 40, y);
         y += 18;
 
         // ── ALERTAS ──
         DADOS_RELATORIO.alertas.forEach((a, idx) => {
-          const temCritico = a.erros.some(e => e.nivel === 'critico');
-          const borderCor  = temCritico ? C.red : C.amber;
+          const temCritico = a.erros.some((e) => e.nivel === "critico");
+          const borderCor = temCritico ? C.red : C.amber;
           const numLinhasReg = a.registros.length;
-          const alturaCard   = 22 + 16 + (numLinhasReg * 14) + 16 + 24 + 16 + 24;
+          const alturaCard = 22 + 16 + numLinhasReg * 14 + 16 + 24 + 16 + 24;
 
           y = checkPage(y, alturaCard + 12);
 
           // Fundo do card
           doc.setFillColor(...C.bg);
-          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, 'F');
+          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "F");
           doc.setDrawColor(...borderCor);
           doc.setLineWidth(3);
           doc.line(40, y + 8, 40, y + alturaCard - 8);
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.5);
-          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, 'S');
+          doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "S");
 
           let cy = y + 16;
 
           // Nome e matrícula
-          doc.setFont('helvetica', 'bold');
+          doc.setFont("helvetica", "bold");
           doc.setFontSize(11);
           doc.setTextColor(...C.gray1);
           doc.text(a.nome, 54, cy);
 
           // Distritos (lado direito)
           if (a.distritos && a.distritos.length > 0) {
-            const distLabel = 'Dist.: ' + a.distritos.join(', ');
-            doc.setFont('helvetica', 'normal');
+            const distLabel = "Dist.: " + a.distritos.join(", ");
+            doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.blue);
-            doc.text(distLabel, W - 50, cy, { align: 'right' });
+            doc.text(distLabel, W - 50, cy, { align: "right" });
           }
 
           cy += 13;
-          doc.setFont('helvetica', 'normal');
+          doc.setFont("helvetica", "normal");
           doc.setFontSize(9);
           doc.setTextColor(...C.gray2);
-          doc.text(`Matrícula: ${a.matricula}   |   Início: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`, 54, cy);
+          doc.text(
+            `Matrícula: ${a.matricula}   |   Início: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`,
+            54,
+            cy,
+          );
           cy += 14;
 
           // Linha separadora interna
@@ -797,22 +1249,22 @@
           cy += 10;
 
           // Registros de saída
-          doc.setFont('helvetica', 'bold');
+          doc.setFont("helvetica", "bold");
           doc.setFontSize(8);
           doc.setTextColor(...C.gray3);
-          doc.text('SAÍDAS DO DIA', 54, cy);
+          doc.text("SAÍDAS DO DIA", 54, cy);
           cy += 11;
 
-          a.registros.forEach(r => {
+          a.registros.forEach((r) => {
             doc.setFillColor(...C.white);
-            doc.roundedRect(54, cy - 8, W - 108, 11, 3, 3, 'F');
-            doc.setFont('helvetica', 'normal');
+            doc.roundedRect(54, cy - 8, W - 108, 11, 3, 3, "F");
+            doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.gray1);
             doc.text(`${r.saida}  →  ${r.retorno}`, 60, cy);
-            doc.setFont('helvetica', 'bold');
+            doc.setFont("helvetica", "bold");
             doc.setTextColor(...C.blue);
-            doc.text(r.tempo, W - 58, cy, { align: 'right' });
+            doc.text(r.tempo, W - 58, cy, { align: "right" });
             cy += 14;
           });
 
@@ -824,15 +1276,18 @@
 
           // Tags de erro
           let tx = 54;
-          a.erros.forEach(e => {
-            const isCrit = e.nivel === 'critico';
-            const tagBg  = isCrit ? C.redBg   : C.amberBg;
-            const tagCor = isCrit ? C.red      : C.amber;
-            const tagW   = doc.getTextWidth(e.msg) + 16;
-            if (tx + tagW > W - 54) { tx = 54; cy += 16; }
+          a.erros.forEach((e) => {
+            const isCrit = e.nivel === "critico";
+            const tagBg = isCrit ? C.redBg : C.amberBg;
+            const tagCor = isCrit ? C.red : C.amber;
+            const tagW = doc.getTextWidth(e.msg) + 16;
+            if (tx + tagW > W - 54) {
+              tx = 54;
+              cy += 16;
+            }
             doc.setFillColor(...tagBg);
-            doc.roundedRect(tx, cy - 8, tagW, 13, 4, 4, 'F');
-            doc.setFont('helvetica', 'bold');
+            doc.roundedRect(tx, cy - 8, tagW, 13, 4, 4, "F");
+            doc.setFont("helvetica", "bold");
             doc.setFontSize(8);
             doc.setTextColor(...tagCor);
             doc.text(e.msg, tx + 8, cy);
@@ -847,15 +1302,17 @@
         for (let p = 1; p <= totalPages; p++) {
           doc.setPage(p);
           doc.setFillColor(...C.navy);
-          doc.rect(0, H - 28, W, 28, 'F');
-          doc.setFont('helvetica', 'normal');
+          doc.rect(0, H - 28, W, 28, "F");
+          doc.setFont("helvetica", "normal");
           doc.setFontSize(8);
           doc.setTextColor(148, 197, 253);
-          doc.text(`SGPD Análise — Uso interno — Correios  |  ${hoje}`, 40, H - 10);
-          doc.text(`Página ${p} de ${totalPages}`, W - 40, H - 10, { align: 'right' });
+          doc.text(`SGPD Análise — Uso interno   |  ${hoje}`, 40, H - 10);
+          doc.text(`Página ${p} de ${totalPages}`, W - 40, H - 10, {
+            align: "right",
+          });
         }
 
-        doc.save(`relatorio_sgpd_${new Date().toISOString().slice(0,10)}.pdf`);
+        doc.save(`relatorio_sgpd_${new Date().toISOString().slice(0, 10)}.pdf`);
       }
     </script>
   </body>
