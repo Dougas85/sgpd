@@ -19,8 +19,17 @@ def parse_hora(h):
         return None
 
 
-def extrair_dados(html):
-    soup = BeautifulSoup(html, "html.parser")
+def extrair_data_consulta(soup):
+    tag = soup.find("input", {"id": "data"}) or soup.find("input", {"id": "dtOperacao"})
+    if tag and tag.get("value"):
+        try:
+            return datetime.strptime(tag["value"].strip(), "%Y-%m-%d").strftime("%d/%m/%Y")
+        except ValueError:
+            return None
+    return None
+
+
+def extrair_dados(soup):
     dados = []
     for linha in soup.select("table tbody tr"):
         cols = linha.find_all("td")
@@ -86,7 +95,13 @@ def verificar_regra3(fim, registros):
     ultimo_retorno = max(r["retorno"] for r in registros)
     delta = fim - ultimo_retorno
     if timedelta(0) <= delta < LIMITE_TPC:
-        return [{"msg": "Fim de atividade sem TPC mínimo (15min)", "nivel": "critico"}]
+        return [{"msg": "Fim de atividade sem TPC mínimo (5min)", "nivel": "critico"}]
+    return []
+
+
+def verificar_regra4(fim):
+    if fim is None:
+        return [{"msg": "Fim de atividade não registrado", "nivel": "critico"}]
     return []
 
 
@@ -128,6 +143,7 @@ def processar_funcionario(mat, info):
         verificar_regra1(inicio, registros)
         + verificar_regra2(tempo_total)
         + verificar_regra3(fim, registros)
+        + verificar_regra4(fim)
     )
     erros = deduplicar(erros)
 
@@ -148,9 +164,11 @@ def processar_funcionario(mat, info):
 
 def processar_html(html):
     if not html or not html.strip():
-        return [], 0
+        return [], 0, None
 
-    agrupado = agrupar_dados(extrair_dados(html))
+    soup     = BeautifulSoup(html, "html.parser")
+    data     = extrair_data_consulta(soup)
+    agrupado = agrupar_dados(extrair_dados(soup))
 
     alertas = []
     for mat, info in agrupado.items():
@@ -160,7 +178,7 @@ def processar_html(html):
         if resultado:
             alertas.append(resultado)
 
-    return alertas, len(agrupado)
+    return alertas, len(agrupado), data
 
 
 app = Flask(__name__)
@@ -170,12 +188,13 @@ app = Flask(__name__)
 def index():
     alertas = None
     total = 0
+    data_consulta = None
     erro_processamento = None
 
     if request.method == "POST":
         html = request.form.get("dados", "")
         try:
-            alertas, total = processar_html(html)
+            alertas, total, data_consulta = processar_html(html)
         except Exception:
             erro_processamento = "Erro ao processar o HTML. Verifique se o conteúdo colado é válido."
 
@@ -183,6 +202,7 @@ def index():
         "index.html",
         alertas=alertas,
         total=total,
+        data_consulta=data_consulta,
         erro_processamento=erro_processamento,
     )
 
