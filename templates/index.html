@@ -1083,16 +1083,25 @@
         const doc = new jsPDF({ unit: "pt", format: "a4" });
         const W = doc.internal.pageSize.getWidth();
         const H = doc.internal.pageSize.getHeight();
-        const hoje = new Date().toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        });
+      
+        // ── NOVO: remove acentos e substitui caracteres fora do ASCII da fonte ──
+        function sanitize(str) {
+          if (!str) return str;
+          return str
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[—–]/g, "-")
+            .replace(/→/g, "->");
+        }
+      
+        // ── ALTERADO: formato manual DD/MM/AAAA evita nomes de mês com acento ──
+        const _d = new Date();
+        const hoje = `${String(_d.getDate()).padStart(2,"0")}/${String(_d.getMonth()+1).padStart(2,"0")}/${_d.getFullYear()}`;
         const horaGeracao = new Date().toLocaleTimeString("pt-BR", {
           hour: "2-digit",
           minute: "2-digit",
         });
-
+      
         const C = {
           navy: [10, 22, 40],
           blue: [37, 99, 235],
@@ -1110,7 +1119,7 @@
           white: [255, 255, 255],
           bg: [248, 250, 252],
         };
-
+      
         function checkPage(y, needed) {
           if (y + needed > H - 50) {
             doc.addPage();
@@ -1118,42 +1127,42 @@
           }
           return y;
         }
-
+      
         // ── CABEÇALHO ──
         doc.setFillColor(...C.navy);
         doc.rect(0, 0, W, 80, "F");
         doc.setFillColor(...C.blue);
         doc.rect(0, 78, W, 3, "F");
-
+      
         doc.setFont("helvetica", "bold");
         doc.setFontSize(20);
         doc.setTextColor(...C.white);
-        doc.text("RELATÓRIO DE INCONSISTÊNCIAS", 40, 36);
-
+        doc.text(sanitize("RELATÓRIO DE INCONSISTÊNCIAS"), 40, 36);         // ← alterado
+      
         doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor(147, 197, 253);
-        doc.text("Sistema SGPD — Análise de Jornada e Tempo Externo", 40, 54);
-
+        doc.text(sanitize("Sistema SGPD - Analise de Jornada e Tempo Externo"), 40, 54); // ← alterado
+      
         doc.setFontSize(9);
         doc.setTextColor(...C.gray3);
         const dataRef = DADOS_RELATORIO.data_consulta
           ? `Data consultada: ${DADOS_RELATORIO.data_consulta}   |   `
           : "";
-        doc.text(`${dataRef}Gerado em: ${hoje} às ${horaGeracao}`, 40, 68);
-
+        doc.text(`${dataRef}Gerado em: ${hoje} as ${horaGeracao}`, 40, 68); // ← "às" → "as"
+      
         // ── CARDS DE RESUMO ──
         let y = 108;
         const cardW = (W - 80 - 20) / 3;
         const resumo = [
           {
-            label: "Funcionários Analisados",
+            label: "Funcionarios Analisados",                               // ← alterado
             val: DADOS_RELATORIO.total,
             bg: C.blueL,
             cor: C.blue,
           },
           {
-            label: "Inconsistências",
+            label: "Inconsistencias",                                       // ← alterado
             val: DADOS_RELATORIO.inconsistencias,
             bg: C.redBg,
             cor: C.red,
@@ -1182,29 +1191,28 @@
           doc.text(r.label, x + cardW / 2, y + 47, { align: "center" });
         });
         y += 78;
-
+      
         // ── LINHA DIVISÓRIA ──
         doc.setDrawColor(...C.border);
         doc.setLineWidth(0.5);
         doc.line(40, y, W - 40, y);
         y += 16;
-
+      
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
         doc.setTextColor(...C.blue);
-        doc.text("DETALHAMENTO DAS INCONSISTÊNCIAS", 40, y);
+        doc.text(sanitize("DETALHAMENTO DAS INCONSISTÊNCIAS"), 40, y);      // ← alterado
         y += 18;
-
+      
         // ── ALERTAS ──
         DADOS_RELATORIO.alertas.forEach((a, idx) => {
           const temCritico = a.erros.some((e) => e.nivel === "critico");
           const borderCor = temCritico ? C.red : C.amber;
           const numLinhasReg = a.registros.length;
           const alturaCard = 22 + 16 + numLinhasReg * 14 + 16 + 24 + 16 + 24;
-
+      
           y = checkPage(y, alturaCard + 12);
-
-          // Fundo do card
+      
           doc.setFillColor(...C.bg);
           doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "F");
           doc.setDrawColor(...borderCor);
@@ -1213,74 +1221,70 @@
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.5);
           doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "S");
-
+      
           let cy = y + 16;
-
-          // Nome e matrícula
+      
           doc.setFont("helvetica", "bold");
           doc.setFontSize(11);
           doc.setTextColor(...C.gray1);
-          doc.text(a.nome, 54, cy);
-
-          // Distritos (lado direito)
+          doc.text(sanitize(a.nome), 54, cy);                               // ← alterado
+      
           if (a.distritos && a.distritos.length > 0) {
             const distLabel = "Dist.: " + a.distritos.join(", ");
             doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.blue);
-            doc.text(distLabel, W - 50, cy, { align: "right" });
+            doc.text(sanitize(distLabel), W - 50, cy, { align: "right" });  // ← alterado
           }
-
+      
           cy += 13;
           doc.setFont("helvetica", "normal");
           doc.setFontSize(9);
           doc.setTextColor(...C.gray2);
           doc.text(
-            `Matrícula: ${a.matricula}   |   Início: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`,
+            sanitize(`Matricula: ${a.matricula}   |   Inicio: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`), // ← alterado
             54,
             cy,
           );
           cy += 14;
-
-          // Linha separadora interna
+      
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.4);
           doc.line(54, cy, W - 54, cy);
           cy += 10;
-
-          // Registros de saída
+      
           doc.setFont("helvetica", "bold");
           doc.setFontSize(8);
           doc.setTextColor(...C.gray3);
-          doc.text("SAÍDAS DO DIA", 54, cy);
+          doc.text("SAIDAS DO DIA", 54, cy);                                // ← alterado
           cy += 11;
-
+      
           a.registros.forEach((r) => {
             doc.setFillColor(...C.white);
             doc.roundedRect(54, cy - 8, W - 108, 11, 3, 3, "F");
             doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.gray1);
-            doc.text(`${r.saida}  →  ${r.retorno}`, 60, cy);
+            doc.text(`${r.saida}  ->  ${r.retorno}`, 60, cy);              // ← "→" → "->"
             doc.setFont("helvetica", "bold");
             doc.setTextColor(...C.blue);
             doc.text(r.tempo, W - 58, cy, { align: "right" });
             cy += 14;
           });
-
+      
           cy += 4;
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.4);
           doc.line(54, cy, W - 54, cy);
           cy += 10;
-
-          // Tags de erro
+      
           let tx = 54;
           a.erros.forEach((e) => {
             const isCrit = e.nivel === "critico";
             const tagBg = isCrit ? C.redBg : C.amberBg;
             const tagCor = isCrit ? C.red : C.amber;
-            const tagW = doc.getTextWidth(e.msg) + 16;
+            const msgClean = sanitize(e.msg);                               // ← alterado
+            const tagW = doc.getTextWidth(msgClean) + 16;
             if (tx + tagW > W - 54) {
               tx = 54;
               cy += 16;
@@ -1290,13 +1294,13 @@
             doc.setFont("helvetica", "bold");
             doc.setFontSize(8);
             doc.setTextColor(...tagCor);
-            doc.text(e.msg, tx + 8, cy);
+            doc.text(msgClean, tx + 8, cy);                                 // ← alterado
             tx += tagW + 6;
           });
-
+      
           y += alturaCard + 12;
         });
-
+      
         // ── RODAPÉ ──
         const totalPages = doc.internal.getNumberOfPages();
         for (let p = 1; p <= totalPages; p++) {
@@ -1306,14 +1310,15 @@
           doc.setFont("helvetica", "normal");
           doc.setFontSize(8);
           doc.setTextColor(148, 197, 253);
-          doc.text(`SGPD Análise — Uso interno   |  ${hoje}`, 40, H - 10);
-          doc.text(`Página ${p} de ${totalPages}`, W - 40, H - 10, {
+          doc.text(`SGPD Analise - Uso interno   |  ${hoje}`, 40, H - 10); // ← alterado
+          doc.text(`Pagina ${p} de ${totalPages}`, W - 40, H - 10, {       // ← alterado
             align: "right",
           });
         }
-
+      
         doc.save(`relatorio_sgpd_${new Date().toISOString().slice(0, 10)}.pdf`);
       }
+
     </script>
   </body>
 </html>
