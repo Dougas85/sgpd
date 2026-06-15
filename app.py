@@ -69,7 +69,7 @@ def verificar_regra1(inicio, registros):
         return []
     delta = registros[0]["saida"] - inicio
     if timedelta(0) <= delta < LIMITE_SAIDA_INICIO:
-        return [{"msg": "Saída em menos de 5min do início", "nivel": "medio"}]
+        return [{"msg": "Saída em menos de 5 min do início", "nivel": "medio"}]
     return []
 
 
