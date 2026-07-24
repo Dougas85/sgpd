@@ -7,7 +7,7 @@ LIMITE_MAX = timedelta(hours=7, minutes=30)
 LIMITE_SAIDA_INICIO = timedelta(minutes=5)
 LIMITE_TPC = timedelta(minutes=5)
 HORA_MANHA = datetime.strptime("12:00:00", "%H:%M:%S")
-HORA_CORTE_INTERVALO = datetime.strptime("14:30:00", "%H:%M:%S")
+HORA_CORTE_INTERVALO = datetime.strptime("17:30:00", "%H:%M:%S")
 
 
 def parse_hora(h):
