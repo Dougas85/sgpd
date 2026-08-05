@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
 LIMITE_MIN = timedelta(hours=5, minutes=00)
+LIMITE_TOLERANCIA_RESIDUO = timedelta(hours=4, minutes=45)
 LIMITE_MAX = timedelta(hours=7, minutes=30)
 LIMITE_SAIDA_INICIO = timedelta(minutes=5)
 LIMITE_TPC = timedelta(minutes=5)
@@ -82,8 +83,10 @@ def desconto_intervalo(saida, retorno):
 
 def verificar_regra2(tempo_total):
     erros = []
-    if tempo_total < LIMITE_MIN:
+    if tempo_total < LIMITE_TOLERANCIA_RESIDUO:
         erros.append({"msg": f"Tempo externo baixo ({tempo_total})", "nivel": "medio"})
+    elif LIMITE_TOLERANCIA_RESIDUO <= tempo_total < LIMITE_MIN:
+        erros.append({"msg": f"Tempo externo em {tempo_total} (Abaixo de 5h). Verificar se o distrito não apresentou resíduo.", "nivel": "alerta"})
     if tempo_total > LIMITE_MAX:
         erros.append({"msg": f"Tempo externo alto ({tempo_total}) - verificar intervalo", "nivel": "critico"})
     return erros
@@ -149,6 +152,7 @@ def processar_funcionario(mat, info):
 
     if not erros:
         return None
+    apenas_residuo = all(e["nivel"] == "alerta" for e in erros)
 
     return {
         "matricula":     mat,
@@ -159,6 +163,7 @@ def processar_funcionario(mat, info):
         "tempo_externo": str(tempo_total),
         "registros":     registros_saida,
         "erros":         erros,
+        "apenas_residuo": apenas_residuo
     }
 
 
@@ -171,14 +176,19 @@ def processar_html(html):
     agrupado = agrupar_dados(extrair_dados(soup))
 
     alertas = []
+    erros_criticos_ou_medios = 0
+    
     for mat, info in agrupado.items():
         if not info["registros"]:
             continue
         resultado = processar_funcionario(mat, info)
         if resultado:
             alertas.append(resultado)
+            if not resultado.get("apenas_residuo"):
+                erros_criticos_ou_medios += 1
+    total_funcionarios = len(agrupado)
 
-    return alertas, len(agrupado), data
+    return alertas, total_funcionarios, data, erros_criticos_ou_medios
 
 
 app = Flask(__name__)
