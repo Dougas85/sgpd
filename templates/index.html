@@ -4,13 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Análise SGPD</title>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    
+    <!-- jsPDF Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <style>
       :root {
         --primary: #2563eb;
@@ -31,8 +36,7 @@
         --success-bg: #ecfdf5;
         --success-border: #a7f3d0;
         --radius: 12px;
-        --shadow-sm:
-          0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
         --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       }
 
@@ -51,103 +55,48 @@
 
       /* ── KEYFRAMES ── */
       @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
+        to { transform: rotate(360deg); }
       }
       @keyframes fadeUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
       }
       @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(-12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
+        from { opacity: 0; transform: translateX(-12px); }
+        to { opacity: 1; transform: translateX(0); }
       }
       @keyframes growLine {
-        from {
-          transform: scaleX(0);
-        }
-        to {
-          transform: scaleX(1);
-        }
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
       }
       @keyframes pulseBadge {
-        0%,
-        100% {
-          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35);
-        }
-        60% {
-          box-shadow: 0 0 0 7px rgba(220, 38, 38, 0);
-        }
+        0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.35); }
+        60% { box-shadow: 0 0 0 7px rgba(220, 38, 38, 0); }
       }
       @keyframes dotDrift {
-        from {
-          transform: translate(0, 0);
-        }
-        to {
-          transform: translate(28px, 28px);
-        }
+        from { transform: translate(0, 0); }
+        to { transform: translate(28px, 28px); }
       }
       @keyframes topbarFlow {
-        0%,
-        100% {
-          background-position: 0% 50%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
       }
       @keyframes shimmerBar {
-        0% {
-          background-position: 200% center;
-        }
-        100% {
-          background-position: -200% center;
-        }
+        0% { background-position: 200% center; }
+        100% { background-position: -200% center; }
       }
       @keyframes titleGlow {
-        0%,
-        100% {
-          background-position: 0% center;
-        }
-        50% {
-          background-position: 100% center;
-        }
+        0%, 100% { background-position: 0% center; }
+        50% { background-position: 100% center; }
       }
       @keyframes badgePop {
-        0% {
-          transform: scale(0.8);
-          opacity: 0;
-        }
-        70% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
-          opacity: 1;
-        }
+        0% { transform: scale(0.8); opacity: 0; }
+        70% { transform: scale(1.05); }
+        100% { transform: scale(1); opacity: 1; }
       }
       @keyframes statPop {
-        0% {
-          transform: scale(0.9) translateY(10px);
-          opacity: 0;
-        }
-        100% {
-          transform: scale(1) translateY(0);
-          opacity: 1;
-        }
+        0% { transform: scale(0.9) translateY(10px); opacity: 0; }
+        100% { transform: scale(1) translateY(0); opacity: 1; }
       }
 
       /* ── PROGRESS BAR ── */
@@ -167,14 +116,7 @@
 
       /* ── TOPBAR ── */
       .topbar {
-        background: linear-gradient(
-          90deg,
-          #1e40af,
-          #2563eb,
-          #3b82f6,
-          #2563eb,
-          #1e40af
-        );
+        background: linear-gradient(90deg, #1e40af, #2563eb, #3b82f6, #2563eb, #1e40af);
         background-size: 300% 100%;
         animation: topbarFlow 10s ease infinite;
         padding: 0 28px;
@@ -228,11 +170,7 @@
         content: "";
         position: absolute;
         inset: -28px;
-        background-image: radial-gradient(
-          circle,
-          rgba(37, 99, 235, 0.12) 1px,
-          transparent 1px
-        );
+        background-image: radial-gradient(rgba(37, 99, 235, 0.12) 1px, transparent 1px);
         background-size: 28px 28px;
         animation: dotDrift 18s linear infinite;
         pointer-events: none;
@@ -245,11 +183,7 @@
         transform: translateX(-50%);
         width: 600px;
         height: 320px;
-        background: radial-gradient(
-          ellipse,
-          rgba(37, 99, 235, 0.1) 0%,
-          transparent 70%
-        );
+        background: radial-gradient(ellipse, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
         pointer-events: none;
       }
       .hero > * {
@@ -283,12 +217,7 @@
         animation: fadeUp 0.6s 0.1s ease both;
       }
       .hero h1 .highlight {
-        background: linear-gradient(
-          135deg,
-          #2563eb 0%,
-          #7c3aed 50%,
-          #2563eb 100%
-        );
+        background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #2563eb 100%);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -344,10 +273,7 @@
         background: #f8fafc;
         resize: vertical;
         outline: none;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s,
-          background 0.2s;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         line-height: 1.5;
       }
       textarea:focus {
@@ -376,10 +302,7 @@
         font-weight: 600;
         font-size: 14px;
         cursor: pointer;
-        transition:
-          transform 0.15s,
-          box-shadow 0.2s,
-          filter 0.2s;
+        transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -412,11 +335,7 @@
         font-size: 14px;
         font-weight: 500;
         cursor: pointer;
-        transition:
-          border-color 0.15s,
-          color 0.15s,
-          background 0.15s,
-          transform 0.1s;
+        transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.1s;
       }
       .btn-secondary:hover {
         border-color: #cbd5e1;
@@ -468,24 +387,16 @@
         text-align: center;
         opacity: 0;
         animation: statPop 0.5s ease forwards;
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
         cursor: default;
       }
       .stat-card:hover {
         transform: translateY(-3px);
         box-shadow: var(--shadow);
       }
-      .stat-card:nth-child(1) {
-        animation-delay: 0.05s;
-      }
-      .stat-card:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .stat-card:nth-child(3) {
-        animation-delay: 0.25s;
-      }
+      .stat-card:nth-child(1) { animation-delay: 0.05s; }
+      .stat-card:nth-child(2) { animation-delay: 0.15s; }
+      .stat-card:nth-child(3) { animation-delay: 0.25s; }
       .stat-label {
         font-size: 11px;
         color: var(--muted);
@@ -501,12 +412,8 @@
         line-height: 1;
         letter-spacing: -2.5px;
       }
-      .stat-card.danger .stat-value {
-        color: var(--danger);
-      }
-      .stat-card.success .stat-value {
-        color: var(--success);
-      }
+      .stat-card.danger .stat-value { color: var(--danger); }
+      .stat-card.success .stat-value { color: var(--success); }
 
       /* ── DIVIDER ── */
       .section-divider {
@@ -581,9 +488,7 @@
         overflow: hidden;
         opacity: 0;
         animation: slideIn 0.4s ease forwards;
-        transition:
-          box-shadow 0.2s,
-          transform 0.2s;
+        transition: box-shadow 0.2s, transform 0.2s;
       }
       .alerta:hover {
         box-shadow: var(--shadow);
@@ -701,9 +606,7 @@
         font-weight: 600;
         border: 1px solid transparent;
         letter-spacing: 0.1px;
-        transition:
-          transform 0.15s,
-          box-shadow 0.15s;
+        transition: transform 0.15s, box-shadow 0.15s;
         cursor: default;
       }
       .tag:hover {
@@ -744,10 +647,7 @@
         cursor: pointer;
         margin-bottom: 20px;
         box-shadow: 0 2px 10px rgba(15, 23, 42, 0.3);
-        transition:
-          filter 0.2s,
-          transform 0.15s,
-          box-shadow 0.2s;
+        transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
         animation: fadeUp 0.5s 0.2s ease both;
         letter-spacing: 0.1px;
       }
@@ -844,176 +744,175 @@
 
       {% if erro_processamento %}
       <div class="erro-banner">&#x26A0; {{ erro_processamento }}</div>
-      {% endif %} {% if alertas is not none %} {% if data_consulta %}
-      <div
-        style="
-          text-align: center;
-          margin-bottom: 16px;
-          animation: fadeUp 0.4s ease both;
-        "
-      >
-        <span
+      {% endif %} 
+      
+      {% if alertas is not none %} 
+        {% if data_consulta %}
+        <div
           style="
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: white;
-            border: 1px solid #bfdbfe;
-            border-radius: 99px;
-            padding: 6px 16px;
-            font-size: 12px;
-            font-weight: 600;
-            color: #2563eb;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+            text-align: center;
+            margin-bottom: 16px;
+            animation: fadeUp 0.4s ease both;
           "
         >
+          <span
+            style="
+              display: inline-flex;
+              align-items: center;
+              gap: 7px;
+              background: white;
+              border: 1px solid #bfdbfe;
+              border-radius: 99px;
+              padding: 6px 16px;
+              font-size: 12px;
+              font-weight: 600;
+              color: #2563eb;
+              box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+            "
+          >
+            <svg
+              width="13"
+              height="13"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            Data consultada: {{ data_consulta }}
+          </span>
+        </div>
+        {% endif %}
+
+        <div class="dashboard" id="resultados">
+          <div class="stat-card">
+            <div class="stat-label">Analisados</div>
+            <div class="stat-value" data-target="{{ total }}">{{ total }}</div>
+          </div>
+          <div
+            class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}"
+          >
+            <div class="stat-label">Inconsistências</div>
+            <div class="stat-value" data-target="{{ alertas|length }}">
+              {{ alertas|length }}
+            </div>
+          </div>
+          {% if total > 0 %}
+          <div class="stat-card success">
+            <div class="stat-label">Conformidade</div>
+            <div
+              class="stat-value"
+              data-target="{{ ((total - alertas|length) / total * 100)|int }}"
+              data-suffix="%"
+            >
+              {{ ((total - alertas|length) / total * 100)|int }}%
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        {% if alertas|length > 0 %}
+        <button class="btn-pdf" onclick="gerarPDF()">
           <svg
-            width="13"
-            height="13"
+            width="16"
+            height="16"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2.5"
             stroke-linecap="round"
+            stroke-linejoin="round"
           >
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+            />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
           </svg>
-          Data consultada: {{ data_consulta }}
-        </span>
-      </div>
-      {% endif %}
-
-      <div class="dashboard" id="resultados">
-        <div class="stat-card">
-          <div class="stat-label">Analisados</div>
-          <div class="stat-value" data-target="{{ total }}">{{ total }}</div>
-        </div>
-        <div
-          class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}"
-        >
-          <div class="stat-label">Inconsistências</div>
-          <div class="stat-value" data-target="{{ alertas|length }}">
-            {{ alertas|length }}
-          </div>
-        </div>
-        {% if total > 0 %}
-        <div class="stat-card success">
-          <div class="stat-label">Conformidade</div>
-          <div
-            class="stat-value"
-            data-target="{{ ((total - alertas|length) / total * 100)|int }}"
-            data-suffix="%"
-          >
-            {{ ((total - alertas|length) / total * 100)|int }}%
-          </div>
-        </div>
+          Exportar Relatório em PDF
+        </button>
         {% endif %}
-      </div>
 
-      {% if alertas|length > 0 %}
-      <button class="btn-pdf" onclick="gerarPDF()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path
-            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
-          />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
-        Exportar Relatório em PDF
-      </button>
-      {% endif %}
+        <script>
+          const DADOS_RELATORIO = {
+            total: {{ total }},
+            inconsistencias: {{ alertas|length }},
+            conformidade: {{ ((total - alertas|length) / total * 100)|int if total > 0 else 0 }},
+            data_consulta: {{ data_consulta | tojson }},
+            alertas: {{ alertas | tojson }}
+          };
+        </script>
 
-      <script>
-        const DADOS_RELATORIO = {
-          total: {{ total }},
-          inconsistencias: {{ alertas|length }},
-          conformidade: {{ ((total - alertas|length) / total * 100)|int if total > 0 else 0 }},
-          data_consulta: {{ data_consulta | tojson }},
-          alertas: {{ alertas | tojson }}
-        };
-      </script>
-
-      {% if alertas|length == 0 %}
-      <div class="success-box">
-        <span class="icon">&#x2705;</span>
-        <p>Nenhuma inconsistência encontrada</p>
-        <span
-          >Todos os {{ total }} registros analisados estão em
-          conformidade.</span
-        >
-      </div>
-
-      {% else %}
-      <div class="section-divider">
-        <h3>Inconsistências</h3>
-        <div class="divider-line"></div>
-        <span class="badge-count"
-          >{{ alertas|length }} registro{{ 's' if alertas|length != 1 else ''
-          }}</span
-        >
-      </div>
-
-      {% for a in alertas %} {% set tem_critico = a.erros | selectattr("nivel",
-      "equalto", "critico") | list | length > 0 %}
-      <div class="alerta {{ '' if tem_critico else 'medio' }}">
-        <div class="alerta-header">
-          <div>
-            <div class="alerta-nome">{{ a.nome }}</div>
-            <div class="alerta-mat">Matrícula {{ a.matricula }}</div>
-            {% if a.distritos %}
-            <div class="alerta-mat">
-              Distrito{{ 's' if a.distritos|length > 1 else '' }}: {{
-              a.distritos|join(', ') }}
-            </div>
-            {% endif %}
-          </div>
-          <div class="alerta-info">
-            <div>Início: <strong>{{ a.inicio }}</strong></div>
-            <div>Fim: <strong>{{ a.fim }}</strong></div>
-            <div>Tempo ext.: <strong>{{ a.tempo_externo }}</strong></div>
-          </div>
+        {% if alertas|length == 0 %}
+        <div class="success-box">
+          <span class="icon">&#x2705;</span>
+          <p>Nenhuma inconsistência encontrada</p>
+          <span>Todos os {{ total }} registros analisados estão em conformidade.</span>
+        </div>
+        {% else %}
+        <div class="section-divider">
+          <h3>Inconsistências</h3>
+          <div class="divider-line"></div>
+          <span class="badge-count"
+            >{{ alertas|length }} registro{{ 's' if alertas|length != 1 else '' }}</span
+          >
         </div>
 
-        <div class="alerta-body">
-          <div class="registros-box">
-            <div class="registros-box-title">Saídas do dia</div>
-            {% for r in a.registros %}
-            <div class="registro-row">
-              <div class="registro-dot"></div>
-              <div class="registro-tempos">
-                {{ r.saida }} &#x2192; {{ r.retorno }}
+        {% for a in alertas %} 
+          {% set tem_critico = a.erros | selectattr("nivel", "equalto", "critico") | list | length > 0 %}
+          <div class="alerta {{ '' if tem_critico else 'medio' }}">
+            <div class="alerta-header">
+              <div>
+                <div class="alerta-nome">{{ a.nome }}</div>
+                <div class="alerta-mat">Matrícula {{ a.matricula }}</div>
+                {% if a.distritos %}
+                <div class="alerta-mat">
+                  Distrito{{ 's' if a.distritos|length > 1 else '' }}: {{ a.distritos|join(', ') }}
+                </div>
+                {% endif %}
               </div>
-              <div class="registro-dur">{{ r.tempo }}</div>
+              <div class="alerta-info">
+                <div>Início: <strong>{{ a.inicio }}</strong></div>
+                <div>Fim: <strong>{{ a.fim }}</strong></div>
+                <div>Tempo ext.: <strong>{{ a.tempo_externo }}</strong></div>
+              </div>
             </div>
-            {% endfor %}
-            <div class="registros-total">
-              <span>Total externo</span>
-              <span>{{ a.tempo_externo }}</span>
-            </div>
-          </div>
 
-          <div class="tags">
-            {% for e in a.erros %}
-            <span class="tag {{ e.nivel }}">{{ e.msg }}</span>
-            {% endfor %}
+            <div class="alerta-body">
+              <div class="registros-box">
+                <div class="registros-box-title">Saídas do dia</div>
+                {% for r in a.registros %}
+                <div class="registro-row">
+                  <div class="registro-dot"></div>
+                  <div class="registro-tempos">
+                    {{ r.saida }} &#x2192; {{ r.retorno }}
+                  </div>
+                  <div class="registro-dur">{{ r.tempo }}</div>
+                </div>
+                {% endfor %}
+                <div class="registros-total">
+                  <span>Total externo</span>
+                  <span>{{ a.tempo_externo }}</span>
+                </div>
+              </div>
+
+              <div class="tags">
+                {% for e in a.erros %}
+                <span class="tag {{ e.nivel }}">{{ e.msg }}</span>
+                {% endfor %}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {% endfor %} {% endif %} {% endif %}
+        {% endfor %} 
+        {% endif %} 
+      {% endif %}
 
       <footer>SGPD Análise &mdash; Uso interno &mdash; Correios</footer>
     </div>
@@ -1026,18 +925,23 @@
       const txt = document.getElementById("btn-texto");
       const bar = document.getElementById("progress-bar");
 
-      form.addEventListener("submit", () => {
-        btn.disabled = true;
-        spin.style.display = "block";
-        txt.textContent = "Analisando...";
-        bar.style.width = "0%";
-        setTimeout(() => (bar.style.width = "55%"), 80);
-        setTimeout(() => (bar.style.width = "85%"), 900);
-      });
+      if (form) {
+        form.addEventListener("submit", () => {
+          btn.disabled = true;
+          spin.style.display = "block";
+          txt.textContent = "Analisando...";
+          bar.style.width = "0%";
+          setTimeout(() => (bar.style.width = "55%"), 80);
+          setTimeout(() => (bar.style.width = "85%"), 900);
+        });
+      }
 
       function limpar() {
-        document.getElementById("campo-dados").value = "";
-        document.getElementById("campo-dados").focus();
+        const campo = document.getElementById("campo-dados");
+        if (campo) {
+          campo.value = "";
+          campo.focus();
+        }
       }
 
       /* ── COUNTER ANIMATION ── */
@@ -1072,7 +976,7 @@
         setTimeout(
           () =>
             resultados.scrollIntoView({ behavior: "smooth", block: "start" }),
-          200,
+          200
         );
       }
 
@@ -1083,8 +987,8 @@
         const doc = new jsPDF({ unit: "pt", format: "a4" });
         const W = doc.internal.pageSize.getWidth();
         const H = doc.internal.pageSize.getHeight();
-      
-        // ── NOVO: remove acentos e substitui caracteres fora do ASCII da fonte ──
+
+        // ── Remove acentos e substitui caracteres fora do ASCII da fonte padrão ──
         function sanitize(str) {
           if (!str) return str;
           return str
@@ -1093,15 +997,14 @@
             .replace(/[—–]/g, "-")
             .replace(/→/g, "->");
         }
-      
-        // ── ALTERADO: formato manual DD/MM/AAAA evita nomes de mês com acento ──
+
         const _d = new Date();
         const hoje = `${String(_d.getDate()).padStart(2,"0")}/${String(_d.getMonth()+1).padStart(2,"0")}/${_d.getFullYear()}`;
         const horaGeracao = new Date().toLocaleTimeString("pt-BR", {
           hour: "2-digit",
           minute: "2-digit",
         });
-      
+
         const C = {
           navy: [10, 22, 40],
           blue: [37, 99, 235],
@@ -1119,7 +1022,7 @@
           white: [255, 255, 255],
           bg: [248, 250, 252],
         };
-      
+
         function checkPage(y, needed) {
           if (y + needed > H - 50) {
             doc.addPage();
@@ -1127,42 +1030,42 @@
           }
           return y;
         }
-      
+
         // ── CABEÇALHO ──
         doc.setFillColor(...C.navy);
         doc.rect(0, 0, W, 80, "F");
         doc.setFillColor(...C.blue);
         doc.rect(0, 78, W, 3, "F");
-      
+
         doc.setFont("helvetica", "bold");
         doc.setFontSize(20);
         doc.setTextColor(...C.white);
-        doc.text(sanitize("RELATÓRIO DE INCONSISTÊNCIAS"), 40, 36);         // ← alterado
-      
+        doc.text(sanitize("RELATÓRIO DE INCONSISTÊNCIAS"), 40, 36);
+
         doc.setFont("helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor(147, 197, 253);
-        doc.text(sanitize("Sistema SGPD - Analise de Jornada e Tempo Externo"), 40, 54); // ← alterado
-      
+        doc.text(sanitize("Sistema SGPD - Analise de Jornada e Tempo Externo"), 40, 54);
+
         doc.setFontSize(9);
         doc.setTextColor(...C.gray3);
         const dataRef = DADOS_RELATORIO.data_consulta
           ? `Data consultada: ${DADOS_RELATORIO.data_consulta}   |   `
           : "";
-        doc.text(`${dataRef}Gerado em: ${hoje} as ${horaGeracao}`, 40, 68); // ← "às" → "as"
-      
+        doc.text(`${dataRef}Gerado em: ${hoje} as ${horaGeracao}`, 40, 68);
+
         // ── CARDS DE RESUMO ──
         let y = 108;
         const cardW = (W - 80 - 20) / 3;
         const resumo = [
           {
-            label: "Funcionarios Analisados",                               // ← alterado
+            label: "Funcionarios Analisados",
             val: DADOS_RELATORIO.total,
             bg: C.blueL,
             cor: C.blue,
           },
           {
-            label: "Inconsistencias",                                       // ← alterado
+            label: "Inconsistencias",
             val: DADOS_RELATORIO.inconsistencias,
             bg: C.redBg,
             cor: C.red,
@@ -1191,28 +1094,28 @@
           doc.text(r.label, x + cardW / 2, y + 47, { align: "center" });
         });
         y += 78;
-      
+
         // ── LINHA DIVISÓRIA ──
         doc.setDrawColor(...C.border);
         doc.setLineWidth(0.5);
         doc.line(40, y, W - 40, y);
         y += 16;
-      
+
         doc.setFont("helvetica", "bold");
         doc.setFontSize(10);
         doc.setTextColor(...C.blue);
-        doc.text(sanitize("DETALHAMENTO DAS INCONSISTÊNCIAS"), 40, y);      // ← alterado
+        doc.text(sanitize("DETALHAMENTO DAS INCONSISTÊNCIAS"), 40, y);
         y += 18;
-      
+
         // ── ALERTAS ──
-        DADOS_RELATORIO.alertas.forEach((a, idx) => {
+        DADOS_RELATORIO.alertas.forEach((a) => {
           const temCritico = a.erros.some((e) => e.nivel === "critico");
           const borderCor = temCritico ? C.red : C.amber;
           const numLinhasReg = a.registros.length;
           const alturaCard = 22 + 16 + numLinhasReg * 14 + 16 + 24 + 16 + 24;
-      
+
           y = checkPage(y, alturaCard + 12);
-      
+
           doc.setFillColor(...C.bg);
           doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "F");
           doc.setDrawColor(...borderCor);
@@ -1221,69 +1124,69 @@
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.5);
           doc.roundedRect(40, y, W - 80, alturaCard, 8, 8, "S");
-      
+
           let cy = y + 16;
-      
+
           doc.setFont("helvetica", "bold");
           doc.setFontSize(11);
           doc.setTextColor(...C.gray1);
-          doc.text(sanitize(a.nome), 54, cy);                               // ← alterado
-      
+          doc.text(sanitize(a.nome), 54, cy);
+
           if (a.distritos && a.distritos.length > 0) {
             const distLabel = "Dist.: " + a.distritos.join(", ");
             doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.blue);
-            doc.text(sanitize(distLabel), W - 50, cy, { align: "right" });  // ← alterado
+            doc.text(sanitize(distLabel), W - 50, cy, { align: "right" });
           }
-      
+
           cy += 13;
           doc.setFont("helvetica", "normal");
           doc.setFontSize(9);
           doc.setTextColor(...C.gray2);
           doc.text(
-            sanitize(`Matricula: ${a.matricula}   |   Inicio: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`), // ← alterado
+            sanitize(`Matricula: ${a.matricula}   |   Inicio: ${a.inicio}   |   Fim: ${a.fim}   |   Tempo ext.: ${a.tempo_externo}`),
             54,
-            cy,
+            cy
           );
           cy += 14;
-      
+
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.4);
           doc.line(54, cy, W - 54, cy);
           cy += 10;
-      
+
           doc.setFont("helvetica", "bold");
           doc.setFontSize(8);
           doc.setTextColor(...C.gray3);
-          doc.text("SAIDAS DO DIA", 54, cy);                                // ← alterado
+          doc.text("SAIDAS DO DIA", 54, cy);
           cy += 11;
-      
+
           a.registros.forEach((r) => {
             doc.setFillColor(...C.white);
             doc.roundedRect(54, cy - 8, W - 108, 11, 3, 3, "F");
             doc.setFont("helvetica", "normal");
             doc.setFontSize(9);
             doc.setTextColor(...C.gray1);
-            doc.text(`${r.saida}  ->  ${r.retorno}`, 60, cy);              // ← "→" → "->"
+            doc.text(`${r.saida}  ->  ${r.retorno}`, 60, cy);
             doc.setFont("helvetica", "bold");
             doc.setTextColor(...C.blue);
             doc.text(r.tempo, W - 58, cy, { align: "right" });
             cy += 14;
           });
-      
+
           cy += 4;
           doc.setDrawColor(...C.border);
           doc.setLineWidth(0.4);
           doc.line(54, cy, W - 54, cy);
           cy += 10;
-      
+
           let tx = 54;
           a.erros.forEach((e) => {
             const isCrit = e.nivel === "critico";
             const tagBg = isCrit ? C.redBg : C.amberBg;
             const tagCor = isCrit ? C.red : C.amber;
-            const msgClean = sanitize(e.msg);                               // ← alterado
+            const msgClean = sanitize(e.msg);
             const tagW = doc.getTextWidth(msgClean) + 16;
             if (tx + tagW > W - 54) {
               tx = 54;
@@ -1294,13 +1197,13 @@
             doc.setFont("helvetica", "bold");
             doc.setFontSize(8);
             doc.setTextColor(...tagCor);
-            doc.text(msgClean, tx + 8, cy);                                 // ← alterado
+            doc.text(msgClean, tx + 8, cy);
             tx += tagW + 6;
           });
-      
+
           y += alturaCard + 12;
         });
-      
+
         // ── RODAPÉ ──
         const totalPages = doc.internal.getNumberOfPages();
         for (let p = 1; p <= totalPages; p++) {
@@ -1310,15 +1213,14 @@
           doc.setFont("helvetica", "normal");
           doc.setFontSize(8);
           doc.setTextColor(148, 197, 253);
-          doc.text(`SGPD Analise - Uso interno   |  ${hoje}`, 40, H - 10); // ← alterado
-          doc.text(`Pagina ${p} de ${totalPages}`, W - 40, H - 10, {       // ← alterado
+          doc.text(`SGPD Analise - Uso interno   |  ${hoje}`, 40, H - 10);
+          doc.text(`Pagina ${p} de ${totalPages}`, W - 40, H - 10, {
             align: "right",
           });
         }
-      
+
         doc.save(`relatorio_sgpd_${new Date().toISOString().slice(0, 10)}.pdf`);
       }
-
     </script>
   </body>
 </html>
