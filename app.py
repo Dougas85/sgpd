@@ -199,13 +199,14 @@ def index():
     alertas = None
     total = 0
     data_consulta = None
+    erros_criticos_ou_medios = 0
     erro_processamento = None
 
     if request.method == "POST":
         html = request.form.get("dados", "")
         try:
-            alertas, total, data_consulta = processar_html(html)
-        except Exception:
+            alertas, total, data_consulta, erros_criticos_ou_medios = processar_html(html)
+        except Exception as e:
             erro_processamento = "Erro ao processar o HTML. Verifique se o conteúdo colado é válido."
 
     return render_template(
@@ -213,6 +214,7 @@ def index():
         alertas=alertas,
         total=total,
         data_consulta=data_consulta,
+        erros_criticos_ou_medios=erros_criticos_ou_medios,
         erro_processamento=erro_processamento,
     )
 
