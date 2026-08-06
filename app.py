@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from bs4 import BeautifulSoup
 
 LIMITE_MIN = timedelta(hours=5, minutes=00)
-LIMITE_TOLERANCIA_RESIDUO = timedelta(hours=4, minutes=45)
+LIMITE_TOLERANCIA_RESIDUO = timedelta(hours=4, minutes=00)
 LIMITE_MAX = timedelta(hours=7, minutes=30)
 LIMITE_SAIDA_INICIO = timedelta(minutes=5)
 LIMITE_TPC = timedelta(minutes=5)
