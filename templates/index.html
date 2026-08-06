@@ -795,22 +795,23 @@
             <div class="stat-value" data-target="{{ total }}">{{ total }}</div>
           </div>
           <div
-            class="stat-card {% if alertas|length > 0 %}danger{% else %}success{% endif %}"
+            class="stat-card {% if erros_criticos_ou_medios > 0 %}danger{% else %}success{% endif %}"
           >
             <div class="stat-label">Inconsistências</div>
-            <div class="stat-value" data-target="{{ alertas|length }}">
-              {{ alertas|length }}
+            <div class="stat-value" data-target="{{ erros_criticos_ou_medios }}">
+              {{ erros_criticos_ou_medios }}
             </div>
           </div>
           {% if total > 0 %}
+          {% set porcentagem_conformidade = (((total - erros_criticos_ou_medios) / total) * 100)|int %}
           <div class="stat-card success">
             <div class="stat-label">Conformidade</div>
             <div
               class="stat-value"
-              data-target="{{ ((total - alertas|length) / total * 100)|int }}"
+              data-target="{{ (( porcentagem_conformidade }}"
               data-suffix="%"
             >
-              {{ ((total - alertas|length) / total * 100)|int }}%
+              {{ porcentagem_conformidade }}%
             </div>
           </div>
           {% endif %}
